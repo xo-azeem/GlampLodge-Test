@@ -1,0 +1,114 @@
+/* PLEASE NOTE: THESE TAILWIND IMPORTS SHOULD NEVER BE DELETED */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+/* DO NOT DELETE THESE TAILWIND IMPORTS, OTHERWISE THE STYLING WILL NOT RENDER AT ALL */
+
+:root[data-theme="light"] {
+  --text: #1a170f;
+  --text-secondary: #5a5446;
+  --background: #faf9f5;
+  --background-secondary: #f3f2ec;
+  --primary: #a49760;
+  --secondary: #e8ede3;
+  --accent: #91bc8a;
+  --border: #d4d2c8;
+  --muted: #f0efea;
+  
+  /* RGB variants for glassmorphism */
+  --text-rgb: 26, 23, 15;
+  --background-rgb: 250, 249, 245;
+  --background-secondary-rgb: 243, 242, 236;
+  --primary-rgb: 164, 151, 96;
+  --accent-rgb: 145, 188, 138;
+  --border-rgb: 212, 210, 200;
+  --muted-rgb: 240, 239, 234;
+}
+
+:root[data-theme="dark"] {
+  --text: #f5f4f0;
+  --text-secondary: #c4c1b8;
+  --background: #0a0905;
+  --background-secondary: #12110c;
+  --primary: #b8a96d;
+  --secondary: #2a2f25;
+  --accent: #a1c895;
+  --border: #2a2720;
+  --muted: #1a1815;
+  
+  /* RGB variants for glassmorphism */
+  --text-rgb: 245, 244, 240;
+  --background-rgb: 10, 9, 5;
+  --background-secondary-rgb: 18, 17, 12;
+  --primary-rgb: 184, 169, 109;
+  --accent-rgb: 161, 200, 149;
+  --border-rgb: 42, 39, 32;
+  --muted-rgb: 26, 24, 21;
+}
+
+:root {
+  --theme-transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Set default theme */
+:root:not([data-theme]) {
+  --theme: light;
+  color-scheme: light;
+}
+
+html {
+  @apply scroll-smooth;
+}
+
+body {
+  @apply bg-background text-text transition-colors;
+  transition: var(--theme-transition);
+}
+
+/* Enhanced utility classes for the theme colors */
+.text-primary {
+  color: var(--primary);
+}
+.bg-primary {
+  background-color: var(--primary);
+}
+.border-primary {
+  border-color: var(--primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+.bg-secondary {
+  background-color: var(--secondary);
+}
+.border-secondary {
+  border-color: var(--secondary);
+}
+
+.text-accent {
+  color: var(--accent);
+}
+.bg-accent {
+  background-color: var(--accent);
+}
+.border-accent {
+  border-color: var(--accent);
+}
+
+.bg-background-secondary {
+  background-color: var(--background-secondary);
+}
+
+.bg-muted {
+  background-color: var(--muted);
+}
+
+.border-muted {
+  border-color: var(--border);
+}
+
+/* Smooth transitions for all theme-aware elements */
+* {
+  transition: var(--theme-transition);
+}
