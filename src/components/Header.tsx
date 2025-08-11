@@ -39,48 +39,28 @@ export const Header = ({
         boxShadow: '0 1px 30px rgba(0, 0, 0, 0.05)'
       }}
     >
-      <div className="container mx-auto px-6 py-4">
+      <div className="container mx-auto px-6 py-0">
         <div className="flex justify-between items-center">
           {/* Logo Section */}
-          <motion.div 
-            className="flex items-center space-x-3"
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.2 }}
-          >
-            <motion.div 
-              className="relative"
-              whileHover={{ rotate: 5 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div 
-                className="w-11 h-11 rounded-2xl flex items-center justify-center relative overflow-hidden"
-                style={{
-                  background: 'linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%)',
-                  boxShadow: '0 4px 20px rgba(var(--primary-rgb), 0.25)'
-                }}
-              >
-                <TreePineIcon size={22} className="text-white relative z-10" />
-                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent" />
-          </div>
-            </motion.div>
+          <div className="flex items-center space-x-3">
+            <img
+              src="/Logo.png"
+              alt="Logo"
+              className="w-24 h-24"
+            />
             <Link to="/" className="block">
-              <motion.div
-                whileHover={{ y: -1 }}
-                transition={{ duration: 0.2 }}
-              >
-                <h1 className="text-xl font-bold text-text tracking-tight">
-                  GlampLodges<span className="text-primary">+</span>
-                </h1>
-                <span className="text-xs text-text-secondary font-medium">
+              <div className="text-xl font-bold text-text tracking-tight">
+                GlampLodges<span className="text-primary">+</span>
+              </div>
+              <span className="text-xs text-text-secondary font-medium">
                 Premium Rentals
               </span>
-              </motion.div>
             </Link>
-          </motion.div>
+          </div>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-8">
-        {/* Brand Navigation */}
+          {/* Brand Navigation */}
             <nav className="flex items-center space-x-1">
               {[
                 { path: '/', label: 'Home' },

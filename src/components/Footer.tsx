@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { 
   FacebookIcon, 
   InstagramIcon, 
@@ -47,29 +48,26 @@ export const Footer = () => {
 
   const canadaLocations = [
     'Mississauga, ON',
-    'Banff, AB',
-    'Tofino, BC',
-    'Toronto, ON'
+    'Niagra Falls, ON',
+    'Quebec City, QC',
   ];
 
   const pakistanLocations = [
     'Lahore, Punjab',
     'Murree, Punjab',
-    'Islamabad',
-    'Karachi, Sindh'
+    'Patriat, Punjab',
+    'Bhurban, Punjab',
   ];
 
   const quickLinks = [
     'About Us',
     'How It Works',
-    'Host Your Property',
     'Help Center'
   ];
 
   const contactInfo = [
-    { icon: PhoneIcon, title: 'Call Us', info: '+1 (800) RENTHUB', color: 'var(--primary)' },
-    { icon: MailIcon, title: 'Email Us', info: 'hello@glamplodges.com', color: 'var(--accent)' },
-    { icon: MapPinIcon, title: 'Visit Us', info: '123 Main St, Toronto, ON', color: 'var(--secondary)' }
+    { icon: PhoneIcon, title: 'Call Us', info: '+92 327 5889098', color: 'var(--primary)' },
+    { icon: MailIcon, title: 'Email Us', info: 'glamplodges@gmail.com', color: 'var(--accent)' },
   ];
 
   return (
@@ -164,35 +162,31 @@ export const Footer = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
           {/* Brand Section */}
             <motion.div variants={itemVariants} className="lg:col-span-2">
-              <div className="flex items-center space-x-3 mb-8">
-                <motion.div 
-                  className="relative"
-                  whileHover={{ rotate: 5, scale: 1.05 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div 
-                    className="w-14 h-14 rounded-2xl flex items-center justify-center relative overflow-hidden"
-                    style={{
-                      background: 'linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%)',
-                      boxShadow: '0 4px 20px rgba(var(--primary-rgb), 0.25)'
-                    }}
-                  >
-                    <TreePineIcon size={26} className="text-white relative z-10" />
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent" />
-                  </div>
-                </motion.div>
-                <div>
-                  <h3 className="text-2xl font-bold text-text tracking-tight">GlampLodges+</h3>
-                  <span className="text-primary text-sm font-medium">Premium Rentals</span>
+              {/* Logo and Text Section */}
+              <div className="grid grid-cols-1 gap-4 mb-8">
+                <div className="flex items-center space-x-3">
+                  <img
+                    src="/Logo.png"
+                    alt="Logo"
+                    className="w-24 h-24 flex-shrink-0"
+                  />
+                  <Link to="/" className="block">
+                    <div className="text-xl font-bold text-text tracking-tight">
+                      GlampLodges<span className="text-primary">+</span>
+                    </div>
+                    <span className="text-xs text-text-secondary font-medium">
+                      Premium Rentals
+                    </span>
+                  </Link>
                 </div>
+                <p className="text-text-secondary leading-relaxed text-lg font-light pl-5">
+                  Connecting travelers with premium accommodations across Canada and Pakistan. 
+                  From city apartments to mountain retreats, we make every stay exceptional.
+                </p>
               </div>
-              <p className="text-text-secondary mb-8 leading-relaxed text-lg font-light">
-                Connecting travelers with premium accommodations across Canada and Pakistan. 
-                From city apartments to mountain retreats, we make every stay exceptional.
-              </p>
               
               {/* Social Links */}
-              <div className="flex space-x-3">
+              <div className="flex space-x-3 pl-5">
                 {socialLinks.map((social, index) => (
                   <motion.a 
                     key={social.label}
@@ -300,48 +294,48 @@ export const Footer = () => {
         </div>
 
           {/* Contact Info Cards */}
-          <motion.div 
-            variants={containerVariants}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16"
-          >
-            {contactInfo.map((contact, index) => (
-              <motion.div
-                key={contact.title}
-                variants={itemVariants}
-                className="p-6 rounded-3xl transition-all duration-300 backdrop-blur-sm"
-                style={{
-                  background: 'rgba(var(--muted-rgb), 0.4)',
-                  border: '1px solid rgba(var(--border-rgb), 0.2)'
-                }}
-                whileHover={{ 
-                  scale: 1.02,
-                  y: -4,
-                  background: 'rgba(var(--muted-rgb), 0.6)',
-                  boxShadow: '0 8px 32px rgba(var(--primary-rgb), 0.1)'
-                }}
-              >
-                <div className="flex items-center space-x-4">
-                  <motion.div 
-                    className="w-14 h-14 rounded-2xl flex items-center justify-center"
-                    style={{
-                      background: `linear-gradient(135deg, ${contact.color}20 0%, ${contact.color}10 100%)`,
-                      border: `1px solid ${contact.color}30`
-                    }}
-                    whileHover={{ rotate: 5 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <contact.icon size={22} style={{ color: contact.color }} />
-                  </motion.div>
-              <div>
-                    <div className="font-semibold text-text mb-1">{contact.title}</div>
-                    <div className="font-medium" style={{ color: contact.color }}>
-                      {contact.info}
-              </div>
-            </div>
+          <motion.div
+  variants={containerVariants}
+  className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16 mx-auto w-full md:max-w-4xl"
+>
+  {contactInfo.map((contact) => (
+    <motion.div
+      key={contact.title}
+      variants={itemVariants}
+      className="p-6 rounded-3xl transition-all duration-300 backdrop-blur-sm flex-1"
+      style={{
+        background: 'rgba(var(--muted-rgb), 0.4)',
+        border: '1px solid rgba(var(--border-rgb), 0.2)'
+      }}
+      whileHover={{
+        scale: 1.02,
+        y: -4,
+        background: 'rgba(var(--muted-rgb), 0.6)',
+        boxShadow: '0 8px 32px rgba(var(--primary-rgb), 0.1)'
+      }}
+    >
+      <div className="flex items-center space-x-4">
+        <motion.div
+          className="w-14 h-14 rounded-2xl flex items-center justify-center"
+          style={{
+            background: `linear-gradient(135deg, ${contact.color}20 0%, ${contact.color}10 100%)`,
+            border: `1px solid ${contact.color}30`
+          }}
+          whileHover={{ rotate: 5 }}
+          transition={{ duration: 0.3 }}
+        >
+          <contact.icon size={22} style={{ color: contact.color }} />
+        </motion.div>
+        <div>
+          <div className="font-semibold text-text mb-1">{contact.title}</div>
+          <div className="font-medium" style={{ color: contact.color }}>
+            {contact.info}
           </div>
-              </motion.div>
-            ))}
-          </motion.div>
+        </div>
+      </div>
+    </motion.div>
+  ))}
+</motion.div>
 
         {/* Bottom Bar */}
           <motion.div 

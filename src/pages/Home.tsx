@@ -1173,83 +1173,80 @@ export const Home = ({ selectedLocation }: HomeProps) => {
           Every detail crafted for your perfect escape.
         </p>
           </motion.div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 xs:gap-8 sm:gap-10">
-        {[
-          {
-            icon: Award,
-            title: "Curated Perfection",
-            description: "Hand-selected properties that exceed the highest standards of luxury and comfort in both urban and natural settings.",
-            delay: 0.1,
-            color: "#a49760"
-          },
-          {
-            icon: MapPin,
-            title: "Prime Locations",
-            description: "Perfectly positioned in Canada and Pakistan's most sought-after destinations, from Montreal to Murree.",
-            delay: 0.2,
-            color: "#6b7f3e"
-          },
-          {
-            icon: Heart,
-            title: "Personal Touch",
-            description: "24/7 concierge service ensuring every moment of your international stay is extraordinary and memorable.",
-            delay: 0.3,
-            color: "#a49760"
-          }
-        ].map((feature, index) => (
-          <Interactive3DCard key={index}>
-            <motion.div
-          initial={{ opacity: 0, y: 60 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: feature.delay, ease: [0.25, 0.1, 0.25, 1] }}
-          viewport={{ once: true }}
-          whileHover={{ y: -12, scale: 1.02 }}
-          className="backdrop-blur-xl p-4 xs:p-6 sm:p-7 lg:p-8 rounded-2xl sm:rounded-3xl shadow-lg sm:shadow-xl lg:shadow-2xl hover:shadow-2xl transition-all duration-500 group border relative overflow-hidden"
-          style={{
-            background: `rgba(var(--background-rgb), ${theme === 'dark' ? '0.1' : '0.8'})`,
-            borderColor: theme === 'dark'
-              ? `rgba(255, 255, 255, 0.15)`
-              : `rgba(var(--border-rgb), 0.4)`,
-            borderWidth: '1px',
-            borderStyle: 'solid',
-            boxShadow: theme === 'dark'
-              ? '0 25px 50px -12px rgba(0, 0, 0, 0.4)'
-              : '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = `rgba(var(--background-rgb), ${theme === 'dark' ? '0.15' : '0.9'})`;
-            e.currentTarget.style.borderColor = `rgba(var(--${feature.color === '#a49760' ? 'primary' : 'accent'}-rgb), 0.6)`;
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = `rgba(var(--background-rgb), ${theme === 'dark' ? '0.1' : '0.8'})`;
-            e.currentTarget.style.borderColor = theme === 'dark'
-              ? `rgba(255, 255, 255, 0.15)`
-              : `rgba(var(--border-rgb), 0.4)`;
-          }}
-            >
-          <motion.div
-            className="absolute inset-0 opacity-0 group-hover:opacity-[0.02] transition-opacity duration-500"
-            style={{
-              background: `radial-gradient(circle at center, var(--${feature.color === '#a49760' ? 'primary' : 'accent'}), transparent 70%)`
-            }}
-          />
-          <motion.div
-            className="w-12 h-12 xs:w-14 xs:h-14 sm:w-16 sm:h-16 rounded-xl xs:rounded-2xl flex items-center justify-center mb-4 xs:mb-6 sm:mb-8 group-hover:scale-105 transition-transform duration-400 relative"
-            style={{
-              background: `rgba(var(--${feature.color === '#a49760' ? 'primary' : 'accent'}-rgb), ${theme === 'dark' ? '0.15' : '0.1'})`
-            }}
-            whileHover={{
-              boxShadow: `0 12px 30px rgba(var(--${feature.color === '#a49760' ? 'primary' : 'accent'}-rgb), 0.2)`
-            }}
-          >
-            <feature.icon size={20} className="xs:w-6 xs:h-6 sm:w-7 sm:h-7" style={{ color: `var(--${feature.color === '#a49760' ? 'primary' : 'accent'})` }} />
-          </motion.div>
-          <h3 className="text-lg xs:text-xl sm:text-xl font-medium mb-3 xs:mb-4 sm:mb-6 relative text-text">{feature.title}</h3>
-          <p className="text-sm xs:text-base leading-relaxed relative text-text-secondary">{feature.description}</p>
-            </motion.div>
-          </Interactive3DCard>
-        ))}
-          </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 xs:gap-8 sm:gap-10">
+              {[
+                {
+                  icon: Award,
+                  title: "Curated Perfection",
+                  description: "Hand-selected properties that exceed the highest standards of luxury and comfort in both urban and natural settings.",
+                  delay: 0.1,
+                  color: "#a49760"
+                },
+                {
+                  icon: MapPin,
+                  title: "Prime Locations",
+                  description: "Perfectly positioned in Canada and Pakistan's most sought-after destinations, from Montreal to Murree.",
+                  delay: 0.2,
+                  color: "#6b7f3e"
+                },
+                {
+                  icon: Heart,
+                  title: "Personal Touch",
+                  description: "24/7 concierge service ensuring every moment of your stay is extraordinary and memorable.",
+                  delay: 0.3,
+                  color: "#a49760"
+                }
+              ].map((feature, index) => (
+                <Interactive3DCard key={index}>
+                  <motion.div
+                    initial={{ opacity: 0, y: 60 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: feature.delay, ease: [0.25, 0.1, 0.25, 1] }}
+                    viewport={{ once: true }}
+                    whileHover={{ y: -12, scale: 1.02 }}
+                    className="h-full flex flex-col backdrop-blur-xl p-6 xs:p-8 sm:p-9 lg:p-10 rounded-2xl sm:rounded-3xl shadow-lg sm:shadow-xl lg:shadow-2xl hover:shadow-2xl transition-all duration-500 group border relative overflow-hidden"
+                    style={{
+                      background: `rgba(var(--background-rgb), ${theme === 'dark' ? '0.1' : '0.8'})`,
+                      borderColor: theme === 'dark'
+                        ? `rgba(255, 255, 255, 0.15)`
+                        : `rgba(var(--border-rgb), 0.4)`,
+                      borderWidth: '1px',
+                      borderStyle: 'solid',
+                      boxShadow: theme === 'dark'
+                        ? '0 25px 50px -12px rgba(0, 0, 0, 0.4)'
+                        : '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = `rgba(var(--background-rgb), ${theme === 'dark' ? '0.15' : '0.9'})`;
+                      e.currentTarget.style.borderColor = `rgba(var(--${feature.color === '#a49760' ? 'primary' : 'accent'}-rgb), 0.6)`;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = `rgba(var(--background-rgb), ${theme === 'dark' ? '0.1' : '0.8'})`;
+                      e.currentTarget.style.borderColor = theme === 'dark'
+                        ? `rgba(255, 255, 255, 0.15)`
+                        : `rgba(var(--border-rgb), 0.4)`;
+                    }}
+                  >
+                    <motion.div
+                      className="absolute inset-0 opacity-0 group-hover:opacity-[0.02] transition-opacity duration-500"
+                      style={{
+                        background: `radial-gradient(circle at center, var(--${feature.color === '#a49760' ? 'primary' : 'accent'}), transparent 70%)`
+                      }}
+                    />
+                    <motion.div
+                      className="w-12 h-12 xs:w-14 xs:h-14 sm:w-16 sm:h-16 rounded-xl xs:rounded-2xl flex items-center justify-center mb-4 xs:mb-6 sm:mb-8 relative"
+                      style={{
+                        background: `rgba(var(--${feature.color === '#a49760' ? 'primary' : 'accent'}-rgb), ${theme === 'dark' ? '0.15' : '0.1'})`
+                      }}
+                    >
+                      <feature.icon size={20} className="xs:w-6 xs:h-6 sm:w-7 sm:h-7" style={{ color: `var(--${feature.color === '#a49760' ? 'primary' : 'accent'})` }} />
+                    </motion.div>
+                    <h3 className="text-lg xs:text-xl sm:text-xl font-medium mb-3 xs:mb-4 sm:mb-6 relative text-text">{feature.title}</h3>
+                    <p className="text-sm xs:text-base leading-relaxed relative text-text-secondary">{feature.description}</p>
+                  </motion.div>
+                </Interactive3DCard>
+              ))}
+            </div>
         </div>
       </section>
 
@@ -1336,52 +1333,94 @@ export const Home = ({ selectedLocation }: HomeProps) => {
              Join thousands who've discovered that luxury and adventure aren't opposites — they're perfect partners waiting in Canada and Pakistan.
            </motion.p>
            
-           <Interactive3DCard>
-             <motion.button
-               whileHover={{ scale: 1.05, y: -3 }}
-               whileTap={{ scale: 0.98 }}
-               className="px-6 xs:px-8 sm:px-12 py-3 xs:py-4 sm:py-5 rounded-xl xs:rounded-2xl font-semibold shadow-2xl transition-all duration-400 text-base xs:text-lg relative overflow-hidden group"
-               style={{
-                 background: theme === 'dark' ? 'rgba(255, 255, 255, 0.95)' : 'var(--background)',
-                 color: theme === 'dark' ? 'var(--background)' : 'var(--text)',
-                 boxShadow: theme === 'dark' 
-                   ? '0 25px 50px -12px rgba(255, 255, 255, 0.2)' 
-                   : '0 25px 50px -12px rgba(0, 0, 0, 0.3)'
-               }}
-               onMouseEnter={(e) => {
-                 e.currentTarget.style.boxShadow = theme === 'dark' 
-                   ? '0 35px 60px -12px rgba(255, 255, 255, 0.3)' 
-                   : '0 35px 60px -12px rgba(0, 0, 0, 0.4)';
-               }}
-               onMouseLeave={(e) => {
-                 e.currentTarget.style.boxShadow = theme === 'dark' 
-                   ? '0 25px 50px -12px rgba(255, 255, 255, 0.2)' 
-                   : '0 25px 50px -12px rgba(0, 0, 0, 0.3)';
-               }}
-             >
-               <motion.div
-                 className="absolute inset-0"
-                 style={{
-                   background: theme === 'dark' 
-                     ? 'linear-gradient(to right, rgba(var(--primary-rgb), 0.15), rgba(var(--accent-rgb), 0.15))'
-                     : 'linear-gradient(to right, rgba(var(--primary-rgb), 0.1), rgba(var(--accent-rgb), 0.1))'
-                 }}
-                 initial={{ x: "-100%" }}
-                 whileHover={{ x: "100%" }}
-                 transition={{ duration: 0.6 }}
-               />
-               <span className="relative z-10 flex items-center">
-                 Begin Your Journey
-                 <motion.div
-                   className="ml-3"
-                   whileHover={{ x: 3 }}
-                   transition={{ duration: 0.3 }}
-                 >
-                   <Sparkles size={20} />
-                 </motion.div>
-               </span>
-             </motion.button>
-           </Interactive3DCard>
+            <Interactive3DCard>
+              <motion.button
+              whileHover={{ scale: 1.05, y: -3 }}
+              whileTap={{ scale: 0.98 }}
+              className="px-6 xs:px-8 sm:px-12 py-3 xs:py-4 sm:py-5 rounded-xl xs:rounded-2xl font-semibold shadow-2xl transition-all duration-400 text-base xs:text-lg relative overflow-hidden group backdrop-blur-xl border border-white/10"
+              style={{
+                background: theme === 'dark'
+                ? 'rgba(255,255,255,0.12)'
+                : 'rgba(255,255,255,0.35)',
+                color: theme === 'dark'
+                ? '#fff'
+                : '#222222',
+                boxShadow: theme === 'dark'
+                ? '0 25px 50px -12px rgba(255,255,255,0.2)'
+                : '0 25px 50px -12px rgba(0,0,0,0.3)',
+                border: theme === 'dark'
+                ? '1px solid rgba(255,255,255,0.15)'
+                : '1px solid rgba(164,151,96,0.15)',
+                WebkitBackdropFilter: 'blur(16px)',
+                backdropFilter: 'blur(16px)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.boxShadow = theme === 'dark'
+                ? '0 35px 60px -12px rgba(255,255,255,0.3)'
+                : '0 35px 60px -12px rgba(0,0,0,0.4)';
+                e.currentTarget.style.background = theme === 'dark'
+                ? 'rgba(255,255,255,0.18)'
+                : 'rgba(255,255,255,0.45)';
+                e.currentTarget.style.borderColor = theme === 'dark'
+                ? 'rgba(164,151,96,0.25)'
+                : 'rgba(164,151,96,0.25)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow = theme === 'dark'
+                ? '0 25px 50px -12px rgba(255,255,255,0.2)'
+                : '0 25px 50px -12px rgba(0,0,0,0.3)';
+                e.currentTarget.style.background = theme === 'dark'
+                ? 'rgba(255,255,255,0.12)'
+                : 'rgba(255,255,255,0.35)';
+                e.currentTarget.style.borderColor = theme === 'dark'
+                ? 'rgba(255,255,255,0.15)'
+                : 'rgba(164,151,96,0.15)';
+              }}
+              >
+              {/* Glass morph gradient overlay */}
+              <motion.div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                background: theme === 'dark'
+                  ? 'linear-gradient(135deg, rgba(164,151,96,0.08) 0%, rgba(107,127,62,0.08) 100%)'
+                  : 'linear-gradient(135deg, rgba(164,151,96,0.12) 0%, rgba(107,127,62,0.12) 100%)',
+                borderRadius: 'inherit',
+                opacity: 0.9
+                }}
+                initial={{ scale: 1 }}
+                whileHover={{ scale: 1.04, opacity: 1 }}
+                transition={{ duration: 0.6 }}
+              />
+              {/* Glass morph highlight */}
+              <motion.div
+                className="absolute top-0 left-0 w-2/3 h-1/3 rounded-t-xl pointer-events-none"
+                style={{
+                background: 'linear-gradient(90deg, rgba(255,255,255,0.18) 0%, transparent 100%)',
+                opacity: 0.7,
+                filter: 'blur(8px)'
+                }}
+                initial={{ x: "-30%" }}
+                whileHover={{ x: "10%" }}
+                transition={{ duration: 0.6 }}
+              />
+              <span className="relative z-10 flex items-center"
+                style={{
+                color: theme === 'dark'
+                  ? '#fff'
+                  : '#222222'
+                }}
+              >
+                Begin Your Journey
+                <motion.div
+                className="ml-3"
+                whileHover={{ x: 3 }}
+                transition={{ duration: 0.3 }}
+                >
+                <ChevronRight size={18} className="text-[#a49760]" />
+                </motion.div>
+              </span>
+              </motion.button>
+            </Interactive3DCard>
            
            {/* Location indicators - iOS style */}
            <motion.div 
