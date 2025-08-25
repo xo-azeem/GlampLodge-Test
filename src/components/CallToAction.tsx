@@ -23,7 +23,7 @@ export const CallToAction = () => {
           </p>
 
           {/* Stats Section */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+          {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             <div className="bg-background p-8 rounded-2xl border border-border hover:shadow-lg transition-all duration-300">
               <div className="text-4xl font-bold text-primary mb-2">500+</div>
               <div className="text-text-secondary">Premium Properties</div>
@@ -39,8 +39,9 @@ export const CallToAction = () => {
               </div>
               <div className="text-text-secondary">Average Rating</div>
             </div>
-          </div>
+          </div> */}
 
+          
           {/* Action Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
             <div className="bg-background p-10 rounded-3xl border border-border hover:shadow-lg transition-all duration-300 group">
@@ -73,34 +74,6 @@ export const CallToAction = () => {
               <button className="bg-accent hover:bg-accent/90 text-white py-4 px-8 rounded-xl transition-all duration-300 font-semibold w-full">
                 Get Help
               </button>
-            </div>
-          </div>
-
-          {/* Contact Information */}
-          <div className="bg-background rounded-3xl p-8 border border-border">
-            <h3 className="text-2xl font-bold mb-8 text-text">
-              Get in Touch
-            </h3>
-            <div className="flex flex-wrap justify-center gap-8">
-              <div className="flex items-center space-x-4 bg-muted rounded-2xl px-6 py-4 hover:bg-secondary transition-colors cursor-pointer">
-                <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center">
-                  <PhoneIcon size={20} className="text-white" />
-                </div>
-                <div className="text-left">
-                  <div className="text-text font-semibold">Call Us</div>
-                  <div className="text-primary">+1 (800) RENTHUB</div>
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-4 bg-muted rounded-2xl px-6 py-4 hover:bg-secondary transition-colors cursor-pointer">
-                <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center">
-                  <MailIcon size={20} className="text-white" />
-                </div>
-                <div className="text-left">
-                  <div className="text-text font-semibold">Email Us</div>
-                  <div className="text-primary">hello@glamplodges.com</div>
-                </div>
-              </div>
             </div>
           </div>
         </div>

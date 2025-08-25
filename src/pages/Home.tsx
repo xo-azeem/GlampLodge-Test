@@ -893,14 +893,14 @@ export const Home = ({ selectedLocation }: HomeProps) => {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 3.5, duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
-          className="absolute bottom-8 right-8 z-30"
+          className="absolute bottom-16 right-8 z-30"
         >
           <motion.div
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             className="relative cursor-pointer group"
             onClick={() => {
-              document.getElementById('brands-section')?.scrollIntoView({ 
+              document.getElementById('features-section')?.scrollIntoView({ 
                 behavior: 'smooth' 
               });
             }}
@@ -938,6 +938,7 @@ export const Home = ({ selectedLocation }: HomeProps) => {
 
       {/* Features Section*/}
       <section
+        id="features-section"
         className="py-12 xs:py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32 px-3 xs:px-4 sm:px-6 relative transition-all duration-300"
         style={{
           background: theme === 'dark'

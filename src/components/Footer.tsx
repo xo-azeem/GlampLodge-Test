@@ -295,47 +295,47 @@ export const Footer = () => {
 
           {/* Contact Info Cards */}
           <motion.div
-  variants={containerVariants}
-  className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16 mx-auto w-full md:max-w-4xl"
->
-  {contactInfo.map((contact) => (
-    <motion.div
-      key={contact.title}
-      variants={itemVariants}
-      className="p-6 rounded-3xl transition-all duration-300 backdrop-blur-sm flex-1"
-      style={{
-        background: 'rgba(var(--muted-rgb), 0.4)',
-        border: '1px solid rgba(var(--border-rgb), 0.2)'
-      }}
-      whileHover={{
-        scale: 1.02,
-        y: -4,
-        background: 'rgba(var(--muted-rgb), 0.6)',
-        boxShadow: '0 8px 32px rgba(var(--primary-rgb), 0.1)'
-      }}
-    >
-      <div className="flex items-center space-x-4">
-        <motion.div
-          className="w-14 h-14 rounded-2xl flex items-center justify-center"
-          style={{
-            background: `linear-gradient(135deg, ${contact.color}20 0%, ${contact.color}10 100%)`,
-            border: `1px solid ${contact.color}30`
-          }}
-          whileHover={{ rotate: 5 }}
-          transition={{ duration: 0.3 }}
-        >
-          <contact.icon size={22} style={{ color: contact.color }} />
-        </motion.div>
-        <div>
-          <div className="font-semibold text-text mb-1">{contact.title}</div>
-          <div className="font-medium" style={{ color: contact.color }}>
-            {contact.info}
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  ))}
-</motion.div>
+            variants={containerVariants}
+            className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16 mx-auto w-full md:max-w-4xl"
+          >
+            {contactInfo.map((contact) => (
+              <motion.div
+                key={contact.title}
+                variants={itemVariants}
+                className="p-6 rounded-3xl transition-all duration-300 backdrop-blur-sm flex-1"
+                style={{
+                  background: 'rgba(var(--muted-rgb), 0.4)',
+                  border: '1px solid rgba(var(--border-rgb), 0.2)'
+                }}
+                whileHover={{
+                  scale: 1.02,
+                  y: -4,
+                  background: 'rgba(var(--muted-rgb), 0.6)',
+                  boxShadow: '0 8px 32px rgba(var(--primary-rgb), 0.1)'
+                }}
+              >
+                <div className="flex items-center space-x-4">
+                  <motion.div
+                    className="w-14 h-14 rounded-2xl flex items-center justify-center"
+                    style={{
+                      background: `linear-gradient(135deg, ${contact.color}20 0%, ${contact.color}10 100%)`,
+                      border: `1px solid ${contact.color}30`
+                    }}
+                    whileHover={{ rotate: 5 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <contact.icon size={22} style={{ color: contact.color }} />
+                  </motion.div>
+                  <div>
+                    <div className="font-semibold text-text mb-1">{contact.title}</div>
+                    <div className="font-medium" style={{ color: contact.color }}>
+                      {contact.info}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
 
         {/* Bottom Bar */}
           <motion.div 
