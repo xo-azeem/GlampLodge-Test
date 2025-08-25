@@ -15,7 +15,7 @@ import {
   serverTimestamp,
   updateDoc
 } from 'firebase/firestore';
-import { auth, db } from '../firebase';
+import { auth, db } from '../../firebase';
 
 export interface UserProfile {
   uid: string;

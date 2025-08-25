@@ -3,6 +3,15 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 // Firebase configuration
+console.log("=== ENVIRONMENT VARIABLES DEBUG ===");
+console.log("Firebase API Key:", import.meta.env.VITE_FIREBASE_API_KEY);
+console.log("Firebase Auth Domain:", import.meta.env.VITE_FIREBASE_AUTH_DOMAIN);
+console.log("Firebase Project ID:", import.meta.env.VITE_FIREBASE_PROJECT_ID);
+console.log("Firebase Messaging Sender ID:", import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID);
+console.log("Firebase App ID:", import.meta.env.VITE_FIREBASE_APP_ID);
+console.log("Firebase Measurement ID:", import.meta.env.VITE_FIREBASE_MEASUREMENT_ID);
+console.log("=====================================");
+
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
