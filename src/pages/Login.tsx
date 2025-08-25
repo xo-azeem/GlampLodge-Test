@@ -166,7 +166,7 @@ export const Login: React.FC = () => {
         >
           <div className="flex items-center justify-center mb-4">
             <img 
-              src="/src/assets/Logo 1 tbg.png" 
+              src="/Logo 1 tbg.png" 
               alt="Glamp Lodges Logo" 
               className="h-52 w-auto"
             />

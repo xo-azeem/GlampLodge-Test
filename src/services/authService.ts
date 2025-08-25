@@ -24,7 +24,6 @@ export interface UserProfile {
   role: 'admin' | 'customer';
   createdAt: Date;
   lastLogin: Date;
-  photoURL?: string;
 }
 
 export interface AuthError {
@@ -94,7 +93,6 @@ class AuthService {
       role: this.determineUserRole(user.email!),
       createdAt: new Date(),
       lastLogin: new Date(),
-      photoURL: user.photoURL || undefined,
       ...additionalData
     };
 
