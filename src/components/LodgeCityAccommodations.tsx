@@ -7,7 +7,7 @@ interface AccommodationsProps {
   selectedLocation: string;
 }
 
-export const Accommodations = ({
+export const LodgeCityAccommodations = ({
   selectedLocation
 }: AccommodationsProps) => {
   const { theme } = useTheme();

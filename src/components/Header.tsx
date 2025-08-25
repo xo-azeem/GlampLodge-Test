@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { MenuIcon, XIcon, TreePineIcon, SunIcon, MoonIcon } from 'lucide-react';
+import { MenuIcon, XIcon, TreePineIcon, SunIcon, MoonIcon, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../hooks/useAuth';
 
 interface HeaderProps {
   selectedLocation: string;
@@ -16,6 +17,7 @@ export const Header = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const { theme, toggleTheme } = useTheme();
+  const { user, userProfile, signOut } = useAuth();
 
   // Determine which brand is active based on the current path
   const getActiveClass = (path: string) => {
@@ -39,28 +41,28 @@ export const Header = ({
         boxShadow: '0 1px 30px rgba(0, 0, 0, 0.05)'
       }}
     >
-      <div className="container mx-auto px-6 py-0">
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-0">
         <div className="flex justify-between items-center">
           {/* Logo Section */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2 lg:space-x-3">
             <img
               src="/Logo.png"
               alt="Logo"
-              className="w-24 h-24"
+              className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24"
             />
             <Link to="/" className="block">
-              <div className="text-xl font-bold text-text tracking-tight">
+              <div className="text-lg sm:text-xl font-bold text-text tracking-tight">
                 GlampLodges<span className="text-primary">+</span>
               </div>
-              <span className="text-xs text-text-secondary font-medium">
+              <span className="text-xs text-text-secondary font-medium hidden sm:block">
                 Premium Rentals
               </span>
             </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-8">
-          {/* Brand Navigation */}
+          <div className="hidden md:flex items-center space-x-4 lg:space-x-8">
+            {/* Brand Navigation */}
             <nav className="flex items-center space-x-1">
               {[
                 { path: '/', label: 'Home' },
@@ -70,10 +72,10 @@ export const Header = ({
                 <Link 
                   key={item.path}
                   to={item.path} 
-                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${getActiveClass(item.path)} hover:bg-muted/50`}
+                  className={`px-3 lg:px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${getActiveClass(item.path)} hover:bg-muted/50`}
                 >
                   {item.label}
-            </Link>
+                </Link>
               ))}
             </nav>
 
@@ -95,7 +97,7 @@ export const Header = ({
                     <motion.button 
                       key={country}
                       onClick={() => setSelectedLocation(country)} 
-                      className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
+                      className={`px-3 lg:px-4 py-2 rounded-xl text-xs lg:text-sm font-medium transition-all duration-300 ${
                         selectedLocation === country 
                           ? 'text-white shadow-sm' 
                           : 'text-text-secondary hover:text-text hover:bg-white/10'
@@ -118,6 +120,28 @@ export const Header = ({
 
           {/* Right Actions */}
           <div className="flex items-center space-x-3">
+            {/* User Profile Button - Only show when logged in */}
+            {user && (
+              <motion.button 
+                onClick={() => window.location.href = '/profile'}
+                className="p-3 rounded-2xl transition-all duration-300"
+                style={{
+                  background: 'rgba(var(--muted-rgb), 0.6)',
+                  border: '1px solid rgba(var(--border-rgb), 0.3)'
+                }}
+                whileHover={{ 
+                  scale: 1.05,
+                  boxShadow: '0 4px 20px rgba(var(--primary-rgb), 0.15)'
+                }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="User Profile"
+              >
+                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white text-xs font-bold">
+                  {userProfile?.displayName?.charAt(0)?.toUpperCase() || user.email?.charAt(0)?.toUpperCase() || 'U'}
+                </div>
+              </motion.button>
+            )}
+
             {/* Theme Toggle */}
             <motion.button 
               onClick={toggleTheme} 
@@ -148,7 +172,7 @@ export const Header = ({
 
             {/* Book Now Button */}
             <motion.button 
-              className="hidden md:flex items-center px-6 py-3 rounded-2xl text-sm font-semibold text-white transition-all duration-300 shadow-lg"
+              className="hidden sm:flex items-center px-4 lg:px-6 py-2 lg:py-3 rounded-2xl text-xs lg:text-sm font-semibold text-white transition-all duration-300 shadow-lg"
               style={{
                 background: 'linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%)',
                 boxShadow: '0 4px 20px rgba(var(--accent-rgb), 0.3)'
@@ -165,7 +189,7 @@ export const Header = ({
 
             {/* Mobile Menu Button */}
             <motion.button 
-              className="lg:hidden p-3 rounded-2xl transition-all duration-300"
+              className="md:hidden p-2 lg:p-3 rounded-2xl transition-all duration-300"
               style={{
                 background: 'rgba(var(--muted-rgb), 0.6)',
                 border: '1px solid rgba(var(--border-rgb), 0.3)'
@@ -178,7 +202,7 @@ export const Header = ({
                 animate={{ rotate: isMenuOpen ? 90 : 0 }}
                 transition={{ duration: 0.2 }}
               >
-                {isMenuOpen ? <XIcon size={20} className="text-text" /> : <MenuIcon size={20} className="text-text" />}
+                {isMenuOpen ? <XIcon size={18} className="text-text" /> : <MenuIcon size={18} className="text-text" />}
               </motion.div>
             </motion.button>
           </div>
@@ -192,10 +216,10 @@ export const Header = ({
               animate={{ opacity: 1, height: 'auto', y: 0 }}
               exit={{ opacity: 0, height: 0, y: -20 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="lg:hidden mt-6 overflow-hidden"
+              className="md:hidden mt-6 overflow-hidden"
             >
               <div 
-                className="p-6 rounded-3xl"
+                className="p-4 sm:p-6 rounded-3xl"
                 style={{
                   background: 'rgba(var(--background-rgb), 0.9)',
                   backdropFilter: 'blur(20px)',
@@ -204,7 +228,7 @@ export const Header = ({
                 }}
               >
                 {/* Mobile Navigation */}
-                <nav className="space-y-2 mb-6">
+                <nav className="space-y-2 mb-4 sm:mb-6">
                   {[
                     { path: '/', label: 'Home' },
                     { path: '/lodge-city', label: 'LodgeCity' },
@@ -218,13 +242,35 @@ export const Header = ({
                     >
                       <Link 
                         to={item.path}
-                        className={`block py-3 px-4 rounded-2xl text-center font-medium transition-all duration-300 ${getActiveClass(item.path)} hover:bg-muted/50`}
+                        className={`block py-2 sm:py-3 px-3 sm:px-4 rounded-2xl text-center text-sm sm:text-base font-medium transition-all duration-300 ${getActiveClass(item.path)} hover:bg-muted/50`}
                         onClick={() => setIsMenuOpen(false)}
                       >
                         {item.label}
                       </Link>
                     </motion.div>
                   ))}
+                  
+                  {/* User Profile Link - Only show when logged in */}
+                  {user && (
+                    <motion.div
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.4, duration: 0.3 }}
+                    >
+                      <Link 
+                        to="/profile"
+                        className="block py-3 px-4 rounded-2xl text-center font-medium transition-all duration-300 text-primary hover:bg-primary/10"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <div className="flex items-center justify-center gap-2">
+                          <div className="w-5 h-5 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white text-xs font-bold">
+                            {userProfile?.displayName?.charAt(0)?.toUpperCase() || user.email?.charAt(0)?.toUpperCase() || 'U'}
+                          </div>
+                          Profile
+                        </div>
+                      </Link>
+                    </motion.div>
+                  )}
                 </nav>
 
                 {/* Mobile Location Selector - Only show on non-home pages */}
@@ -233,13 +279,13 @@ export const Header = ({
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2, duration: 0.3 }}
-                    className="flex space-x-3 mb-6"
+                    className="flex space-x-2 sm:space-x-3 mb-4 sm:mb-6"
                   >
                     {['Canada', 'Pakistan'].map((country) => (
                       <motion.button 
                         key={country}
                         onClick={() => setSelectedLocation(country)} 
-                        className={`flex-1 py-3 px-4 rounded-2xl text-sm font-medium transition-all duration-300 ${
+                        className={`flex-1 py-2 sm:py-3 px-2 sm:px-4 rounded-2xl text-xs sm:text-sm font-medium transition-all duration-300 ${
                           selectedLocation === country 
                             ? 'text-white shadow-sm' 
                             : 'text-text-secondary hover:text-text'
@@ -264,7 +310,7 @@ export const Header = ({
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3, duration: 0.3 }}
-                  className="w-full py-4 rounded-2xl text-white font-semibold shadow-lg"
+                  className="w-full py-3 sm:py-4 rounded-2xl text-sm sm:text-base text-white font-semibold shadow-lg"
                   style={{
                     background: 'linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%)',
                     boxShadow: '0 4px 20px rgba(var(--accent-rgb), 0.3)'
@@ -272,8 +318,34 @@ export const Header = ({
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-            Book Now
+                  Book Now
                 </motion.button>
+
+                {/* Mobile Logout Button - Only show when logged in */}
+                {user && (
+                  <motion.button 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4, duration: 0.3 }}
+                    onClick={async () => {
+                      try {
+                        await signOut();
+                        window.location.href = '/';
+                      } catch (error) {
+                        console.error('Logout error:', error);
+                      }
+                    }}
+                    className="w-full py-3 sm:py-4 rounded-2xl text-sm sm:text-base font-semibold border-2 transition-all duration-300 mt-2 sm:mt-3"
+                    style={{
+                      borderColor: '#ef4444',
+                      color: '#ef4444'
+                    }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    Sign Out
+                  </motion.button>
+                )}
         </div>
             </motion.div>
           )}

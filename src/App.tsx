@@ -4,6 +4,8 @@ import { MainLayout } from './components/MainLayout';
 import { Home } from './pages/Home';
 import { LodgeCity } from './pages/LodgeCity';
 import { GlampLodge } from './pages/GlampLodge';
+import { Login } from './pages/Login';
+import { UserProfile } from './pages/UserProfile';
 import { ThemeProvider } from './context/ThemeContext';
 import { RouteScrollToTop, ScrollToTopButton } from './components/ScrollToTop';
 
@@ -18,7 +20,8 @@ export function App() {
         
         <div className="w-full min-h-screen bg-background text-text transition-colors">
           <Routes>
-            <Route path="/" element={
+            <Route path="/" element={<Login />} />
+            <Route path="/home" element={
               <MainLayout selectedLocation={selectedLocation} setSelectedLocation={setSelectedLocation}>
                 <Home selectedLocation={selectedLocation} />
               </MainLayout>
@@ -33,6 +36,7 @@ export function App() {
                 <GlampLodge selectedLocation={selectedLocation} />
               </MainLayout>
             } />
+            <Route path="/profile" element={<UserProfile />} />
           </Routes>
           
           {/* Visual scroll to top button */}
