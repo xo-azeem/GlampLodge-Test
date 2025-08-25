@@ -68,15 +68,33 @@ class AuthService {
       const userDoc = await getDoc(doc(db, 'users', user.uid));
       
       if (userDoc.exists()) {
+        const userData = userDoc.data();
+        
+        // Convert Firestore timestamps to Date objects
+        const createdAt = userData.createdAt?.toDate ? userData.createdAt.toDate() : userData.createdAt;
+        const lastLogin = userData.lastLogin?.toDate ? userData.lastLogin.toDate() : userData.lastLogin;
+        
         this.userProfile = {
           uid: user.uid,
           email: user.email!,
           displayName: user.displayName || 'Unknown User',
-          ...userDoc.data(),
-        } as UserProfile;
+          role: userData.role || 'customer',
+          createdAt: createdAt || new Date(),
+          lastLogin: lastLogin || new Date()
+        };
 
-        // Update last login
-        await this.updateLastLogin(user.uid);
+        // Only update last login if it's been more than 1 hour since last update
+        if (lastLogin) {
+          const now = new Date();
+          const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
+          
+          if (lastLogin.getTime() < oneHourAgo.getTime()) {
+            await this.updateLastLogin(user.uid);
+          }
+        } else {
+          // If no lastLogin, update it
+          await this.updateLastLogin(user.uid);
+        }
       } else {
         // Create user profile if it doesn't exist
         await this.createUserProfile(user);
@@ -87,24 +105,28 @@ class AuthService {
   }
 
   private async createUserProfile(user: User, additionalData?: Partial<UserProfile>): Promise<void> {
-    const userProfile: Omit<UserProfile, 'uid'> = {
+    const now = serverTimestamp();
+    const currentDate = new Date();
+    
+    const userProfileData = {
       email: user.email!,
       displayName: user.displayName || additionalData?.displayName || 'Unknown User',
       role: this.determineUserRole(user.email!),
-      createdAt: new Date(),
-      lastLogin: new Date(),
+      createdAt: now,
+      lastLogin: now,
       ...additionalData
     };
 
-    await setDoc(doc(db, 'users', user.uid), {
-      ...userProfile,
-      createdAt: serverTimestamp(),
-      lastLogin: serverTimestamp()
-    });
+    await setDoc(doc(db, 'users', user.uid), userProfileData);
 
+    // Set local userProfile with current date for immediate use
     this.userProfile = {
       uid: user.uid,
-      ...userProfile
+      email: user.email!,
+      displayName: user.displayName || additionalData?.displayName || 'Unknown User',
+      role: this.determineUserRole(user.email!),
+      createdAt: currentDate,
+      lastLogin: currentDate
     };
   }
 
@@ -119,6 +141,11 @@ class AuthService {
       await updateDoc(doc(db, 'users', uid), {
         lastLogin: serverTimestamp()
       });
+      
+      // Update local userProfile with current date
+      if (this.userProfile) {
+        this.userProfile.lastLogin = new Date();
+      }
     } catch (error) {
       console.error('Error updating last login:', error);
     }
@@ -216,6 +243,26 @@ class AuthService {
 
   public getUserRole(): string | null {
     return this.userProfile?.role || null;
+  }
+
+  public async updateUserProfile(uid: string, updates: Partial<UserProfile>): Promise<void> {
+    try {
+      // Update in Firestore
+      await updateDoc(doc(db, 'users', uid), updates);
+      
+      // If updating displayName, also update Firebase Auth
+      if (updates.displayName && this.currentUser) {
+        await updateProfile(this.currentUser, { displayName: updates.displayName });
+      }
+      
+      // Update local userProfile
+      if (this.userProfile) {
+        this.userProfile = { ...this.userProfile, ...updates };
+      }
+    } catch (error) {
+      console.error('Error updating user profile:', error);
+      throw error;
+    }
   }
 
   private formatAuthError(error: any): AuthError {

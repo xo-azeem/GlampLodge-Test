@@ -16,9 +16,11 @@ interface ProfileFormData {
 export const UserProfile: React.FC = () => {
   const { theme } = useTheme();
   const navigate = useNavigate();
-  const { user, userProfile, signOut, loading } = useAuth();
+  const { user, userProfile, signOut, updateUserProfile, loading } = useAuth();
   
   const [isEditing, setIsEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
   const [formData, setFormData] = useState<ProfileFormData>({
     displayName: '',
     email: '',
@@ -36,12 +38,52 @@ export const UserProfile: React.FC = () => {
 
   useEffect(() => {
     if (userProfile) {
+      const formatDate = (date: any) => {
+        if (!date) return 'Unknown';
+        
+        try {
+          let dateObj: Date;
+          
+          // Handle different date formats
+          if (date.toDate && typeof date.toDate === 'function') {
+            // Firestore timestamp
+            dateObj = date.toDate();
+          } else if (date instanceof Date) {
+            // Regular Date object
+            dateObj = date;
+          } else if (typeof date === 'string') {
+            // String date
+            dateObj = new Date(date);
+          } else if (typeof date === 'number') {
+            // Timestamp number
+            dateObj = new Date(date);
+          } else {
+            // Fallback
+            dateObj = new Date(date);
+          }
+          
+          // Check if date is valid
+          if (isNaN(dateObj.getTime())) {
+            return 'Unknown';
+          }
+          
+          return dateObj.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+        } catch (error) {
+          console.error('Date formatting error:', error, date);
+          return 'Unknown';
+        }
+      };
+
       const data = {
         displayName: userProfile.displayName || 'Unknown User',
         email: userProfile.email || '',
         role: userProfile.role || 'customer',
-        createdAt: userProfile.createdAt ? new Date(userProfile.createdAt).toLocaleDateString() : 'Unknown',
-        lastLogin: userProfile.lastLogin ? new Date(userProfile.lastLogin).toLocaleDateString() : 'Unknown'
+        createdAt: formatDate(userProfile.createdAt),
+        lastLogin: formatDate(userProfile.lastLogin)
       };
       setFormData(data);
       setOriginalData(data);
@@ -52,11 +94,27 @@ export const UserProfile: React.FC = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSave = () => {
-    // Here you would typically update the user profile in Firebase
-    // For now, we'll just update the local state
-    setOriginalData(formData);
-    setIsEditing(false);
+  const handleSave = async () => {
+    if (!user || !userProfile) return;
+    
+    try {
+      setIsSaving(true);
+      setSaveError(null);
+      
+      // Update in Firebase
+      await updateUserProfile(user.uid, {
+        displayName: formData.displayName
+      });
+      
+      // Update local state
+      setOriginalData(formData);
+      setIsEditing(false);
+    } catch (error: any) {
+      console.error('Error saving profile:', error);
+      setSaveError(error.message || 'Failed to save profile');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleCancel = () => {
@@ -192,23 +250,28 @@ export const UserProfile: React.FC = () => {
                 </motion.button>
               ) : (
                 <div className="flex gap-2">
-                  <motion.button
-                    key="save"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
-                    onClick={handleSave}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300"
-                    style={{
-                      background: 'var(--primary)',
-                      color: 'white'
-                    }}
-                  >
-                    <Save size={16} />
-                    Save
-                  </motion.button>
+                                     <motion.button
+                     key="save"
+                     initial={{ opacity: 0, scale: 0.8 }}
+                     animate={{ opacity: 1, scale: 1 }}
+                     exit={{ opacity: 0, scale: 0.8 }}
+                     onClick={handleSave}
+                     disabled={isSaving}
+                     whileHover={{ scale: isSaving ? 1 : 1.05 }}
+                     whileTap={{ scale: isSaving ? 1 : 0.95 }}
+                     className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                     style={{
+                       background: 'var(--primary)',
+                       color: 'white'
+                     }}
+                   >
+                     {isSaving ? (
+                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                     ) : (
+                       <Save size={16} />
+                     )}
+                     {isSaving ? 'Saving...' : 'Save'}
+                   </motion.button>
                   <motion.button
                     key="cancel"
                     initial={{ opacity: 0, scale: 0.8 }}
@@ -302,6 +365,17 @@ export const UserProfile: React.FC = () => {
                 <span style={{ color: 'var(--text)' }}>{formData.lastLogin}</span>
               </div>
             </div>
+            
+            {/* Save Error Display */}
+            {saveError && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-4 p-3 rounded-xl text-sm text-red-600 bg-red-50 border border-red-200"
+              >
+                {saveError}
+              </motion.div>
+            )}
           </div>
         </motion.div>
 

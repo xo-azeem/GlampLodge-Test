@@ -17,6 +17,7 @@ interface UseAuthReturn {
   signUpWithEmail: (email: string, password: string, displayName: string) => Promise<User>;
   signInWithGoogle: () => Promise<User>;
   signOut: () => Promise<void>;
+  updateUserProfile: (uid: string, updates: Partial<UserProfile>) => Promise<void>;
   clearError: () => void;
 }
 
@@ -75,6 +76,10 @@ export const useAuth = (): UseAuthReturn => {
     return handleAuthAction(() => authService.signOut());
   };
 
+  const updateUserProfile = async (uid: string, updates: Partial<UserProfile>): Promise<void> => {
+    return handleAuthAction(() => authService.updateUserProfile(uid, updates), false);
+  };
+
   const clearError = (): void => {
     setError(null);
   };
@@ -94,6 +99,7 @@ export const useAuth = (): UseAuthReturn => {
     signUpWithEmail,
     signInWithGoogle,
     signOut,
+    updateUserProfile,
     clearError
   };
 };
