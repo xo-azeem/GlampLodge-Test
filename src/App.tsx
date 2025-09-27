@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { MainLayout } from './components/MainLayout';
 import { Home } from './pages/Home';
@@ -14,7 +14,7 @@ export function App() {
 
   return (
     <ThemeProvider>
-      <Router>
+      <Router future={{ v7_relativeSplatPath: true }}>
         {/* Automatic scroll to top on route changes and location changes */}
         <RouteScrollToTop selectedLocation={selectedLocation} />
         

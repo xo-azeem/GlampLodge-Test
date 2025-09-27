@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Eye, EyeOff, Mail, Lock, User, ArrowRight } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, ArrowRight, UserCheck, ArrowLeft } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
@@ -77,7 +77,7 @@ export const Login: React.FC = () => {
       } else {
         await signUpWithEmail(formData.email, formData.password, formData.displayName);
       }
-      navigate('/home');
+      navigate('/');
     } catch (error) {
       console.error('Authentication error:', error);
     }
@@ -86,9 +86,24 @@ export const Login: React.FC = () => {
   const handleGoogleSignIn = async () => {
     try {
       await signInWithGoogle();
-      navigate('/home');
+      navigate('/');
     } catch (error) {
       console.error('Google sign-in error:', error);
+    }
+  };
+
+  const handleGuestLogin = () => {
+    // For guest login, we just navigate to home without authentication
+    // The app will handle guest mode automatically
+    navigate('/');
+  };
+
+  const handleGoBack = () => {
+    // Go back to the previous page, or home if no history
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate('/');
     }
   };
 
@@ -101,12 +116,6 @@ export const Login: React.FC = () => {
     }
   };
 
-  const toggleMode = () => {
-    setIsLogin(!isLogin);
-    setFormData({ email: '', password: '', displayName: '' });
-    setFormErrors({});
-    clearError();
-  };
 
   const getInputError = (field: keyof FormErrors): string | undefined => {
     return formErrors[field];
@@ -119,6 +128,28 @@ export const Login: React.FC = () => {
              ? 'linear-gradient(135deg, rgba(var(--background-secondary-rgb), 1) 0%, rgba(var(--background-rgb), 1) 100%)'
              : 'linear-gradient(135deg, rgba(var(--background-secondary-rgb), 1) 0%, rgba(var(--background-rgb), 1) 100%)'
          }}>
+      
+      {/* Back Button */}
+      <motion.button
+        onClick={handleGoBack}
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.1, duration: 0.5 }}
+        className="absolute top-6 left-6 z-20 p-3 rounded-2xl transition-all duration-300 backdrop-blur-xl border"
+        style={{
+          background: 'rgba(var(--background-rgb), 0.8)',
+          borderColor: 'rgba(var(--border-rgb), 0.3)',
+          color: 'var(--text)'
+        }}
+        whileHover={{ 
+          scale: 1.05,
+          boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)'
+        }}
+        whileTap={{ scale: 0.95 }}
+        aria-label="Go back"
+      >
+        <ArrowLeft size={20} />
+      </motion.button>
       
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -366,6 +397,38 @@ export const Login: React.FC = () => {
               </svg>
               <span>Continue with Google</span>
             </motion.button>
+
+            {/* Guest Login Button */}
+            <motion.button
+              type="button"
+              onClick={handleGuestLogin}
+              disabled={loading}
+              whileHover={{ scale: loading ? 1 : 1.02, y: loading ? 0 : -2 }}
+              whileTap={{ scale: loading ? 1 : 0.98 }}
+              className="w-full py-4 rounded-2xl font-medium border-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center group"
+              style={{
+                borderColor: 'var(--accent)',
+                color: 'var(--accent)',
+                background: 'rgba(var(--accent-rgb), 0.05)'
+              }}
+            >
+              <UserCheck size={20} className="mr-3" />
+              <span>Continue as Guest</span>
+            </motion.button>
+
+            {/* Guest Info Message */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+              className="text-center mt-4"
+            >
+              <p className="text-sm text-text-secondary">
+                You can explore everything as a guest. 
+                <br />
+                <span className="text-accent font-medium">Login is only required when booking.</span>
+              </p>
+            </motion.div>
 
             {/* Error Display */}
             {error && (
