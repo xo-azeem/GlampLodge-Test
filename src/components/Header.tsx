@@ -120,8 +120,8 @@ export const Header = ({
 
           {/* Right Actions */}
           <div className="flex items-center space-x-3">
-            {/* User Profile Button - Only show when logged in */}
-            {user && (
+            {/* User Profile Button - Show when logged in */}
+            {user ? (
               <motion.button 
                 onClick={() => window.location.href = '/profile'}
                 className="p-3 rounded-2xl transition-all duration-300"
@@ -139,6 +139,25 @@ export const Header = ({
                 <div className="w-6 h-6 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white text-xs font-bold">
                   {userProfile?.displayName?.charAt(0)?.toUpperCase() || user.email?.charAt(0)?.toUpperCase() || 'U'}
                 </div>
+              </motion.button>
+            ) : (
+              /* Guest Login/Signup Button */
+              <motion.button 
+                onClick={() => window.location.href = '/login'}
+                className="px-4 py-2 rounded-2xl text-sm font-medium transition-all duration-300"
+                style={{
+                  background: 'rgba(var(--muted-rgb), 0.6)',
+                  border: '1px solid rgba(var(--border-rgb), 0.3)',
+                  color: 'var(--text)'
+                }}
+                whileHover={{ 
+                  scale: 1.05,
+                  boxShadow: '0 4px 20px rgba(var(--primary-rgb), 0.15)'
+                }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="Sign In"
+              >
+                Sign In
               </motion.button>
             )}
 
@@ -250,8 +269,8 @@ export const Header = ({
                     </motion.div>
                   ))}
                   
-                  {/* User Profile Link - Only show when logged in */}
-                  {user && (
+                  {/* User Profile Link - Show when logged in, Login link for guests */}
+                  {user ? (
                     <motion.div
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
@@ -267,6 +286,23 @@ export const Header = ({
                             {userProfile?.displayName?.charAt(0)?.toUpperCase() || user.email?.charAt(0)?.toUpperCase() || 'U'}
                           </div>
                           Profile
+                        </div>
+                      </Link>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.4, duration: 0.3 }}
+                    >
+                      <Link 
+                        to="/login"
+                        className="block py-3 px-4 rounded-2xl text-center font-medium transition-all duration-300 text-primary hover:bg-primary/10"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <div className="flex items-center justify-center gap-2">
+                          <User size={20} />
+                          Sign In
                         </div>
                       </Link>
                     </motion.div>

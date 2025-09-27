@@ -132,7 +132,7 @@ export const UserProfile: React.FC = () => {
   };
 
   const handleBack = () => {
-    navigate('/home');
+    navigate('/');
   };
 
   if (!user || !userProfile) {

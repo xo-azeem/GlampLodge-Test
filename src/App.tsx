@@ -20,7 +20,12 @@ export function App() {
         
         <div className="w-full min-h-screen bg-background text-text transition-colors">
           <Routes>
-            <Route path="/" element={<Login />} />
+            <Route path="/" element={
+              <MainLayout selectedLocation={selectedLocation} setSelectedLocation={setSelectedLocation}>
+                <Home selectedLocation={selectedLocation} />
+              </MainLayout>
+            } />
+            <Route path="/login" element={<Login />} />
             <Route path="/home" element={
               <MainLayout selectedLocation={selectedLocation} setSelectedLocation={setSelectedLocation}>
                 <Home selectedLocation={selectedLocation} />
