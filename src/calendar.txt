@@ -1,0 +1,2 @@
+ical calendar link: https://ical.booking.com/v1/export?t=fa24fe26-d0fe-467c-af30-843608b07ede
+ical calendar name: Patriata

@@ -157,7 +157,7 @@ export const Hero = ({ selectedLocation, pageType }: HeroProps) => {
   return (
     <motion.section 
       style={{ y, opacity, scale }}
-      className="relative h-screen flex flex-col justify-center items-center px-6 overflow-hidden pt-20"
+      className="relative min-h-screen flex flex-col justify-center items-center px-2 xs:px-4 sm:px-6 overflow-hidden pt-16 xs:pt-20 pb-8 xs:pb-12"
     >
       {/* Background Image with Enhanced Overlay */}
       <div className="absolute inset-0">
@@ -225,9 +225,9 @@ export const Hero = ({ selectedLocation, pageType }: HeroProps) => {
         </motion.div>
 
         {/* Main Title */}
-        <motion.div variants={itemVariants} className="mb-12">
+        <motion.div variants={itemVariants} className="mb-6 xs:mb-8 sm:mb-10 md:mb-12">
           <motion.h1 
-            className="text-5xl md:text-7xl font-extralight text-white tracking-tight mb-6"
+            className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extralight text-white tracking-tight mb-4 xs:mb-6 leading-tight"
             style={{ textShadow: '0 4px 20px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3)' }}
             whileHover={{ scale: 1.01 }}
             transition={{ duration: 0.3 }}
@@ -235,7 +235,7 @@ export const Hero = ({ selectedLocation, pageType }: HeroProps) => {
             {content.title}
           </motion.h1>
           <motion.p 
-            className="text-white/95 text-xl md:text-2xl font-light max-w-3xl mx-auto leading-relaxed"
+            className="text-white/95 text-base xs:text-lg sm:text-xl md:text-2xl font-light max-w-3xl mx-auto leading-relaxed px-2"
             style={{ textShadow: '0 2px 10px rgba(0,0,0,0.4)' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -248,10 +248,10 @@ export const Hero = ({ selectedLocation, pageType }: HeroProps) => {
         {/* Enhanced Glassmorphism Search Bar */}
         <motion.div 
           variants={searchContainerVariants}
-          className="mb-12 perspective-1000"
+          className="mb-6 xs:mb-8 sm:mb-10 md:mb-12 perspective-1000 w-full max-w-6xl mx-auto"
         >
           <motion.div 
-            className="backdrop-blur-3xl rounded-[2rem] p-8 shadow-2xl border max-w-5xl mx-auto relative overflow-hidden"
+            className="backdrop-blur-3xl rounded-2xl xs:rounded-3xl p-4 xs:p-6 sm:p-8 shadow-2xl border relative overflow-hidden w-full"
             style={{ 
               background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%)',
               borderColor: 'rgba(255, 255, 255, 0.2)',
@@ -312,9 +312,9 @@ export const Hero = ({ selectedLocation, pageType }: HeroProps) => {
             </div>
 
             {/* Select and Search Bar */}
-            <div className="relative z-10">
+            <div className="relative z-10 w-full">
               <motion.h3 
-                className="text-2xl font-light mb-8 text-center text-white/95"
+                className="text-lg xs:text-xl sm:text-2xl font-light mb-4 xs:mb-6 sm:mb-8 text-center text-white/95 px-2"
                 style={{ textShadow: '0 2px 10px rgba(0,0,0,0.3)' }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -325,7 +325,7 @@ export const Hero = ({ selectedLocation, pageType }: HeroProps) => {
               
               <motion.div 
                 variants={searchContainerVariants}
-                className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8"
+                className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-3 xs:gap-4 mb-4 xs:mb-6 sm:mb-8"
               >
                 {/* Location/City Field */}
                 <motion.div 
@@ -335,20 +335,27 @@ export const Hero = ({ selectedLocation, pageType }: HeroProps) => {
                   transition={{ duration: 0.2 }}
                 >
                   <div 
-                    className="flex items-center space-x-3 rounded-2xl p-5 transition-all duration-300 backdrop-blur-sm border relative overflow-hidden"
+                    className="flex items-center space-x-2 xs:space-x-3 rounded-xl xs:rounded-2xl p-3 xs:p-4 sm:p-5 transition-all duration-300 backdrop-blur-sm border relative overflow-hidden"
                     style={{ 
                       background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%)',
                       borderColor: 'rgba(255, 255, 255, 0.2)',
                       boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1)'
                     }}
                   >
-                    <SearchIcon size={20} className="text-white/80" />
+                    <SearchIcon size={16} className="text-white/80 xs:w-5 xs:h-5" />
                     
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                       <label className="text-xs block mb-1 text-white/70 font-medium text-left">
                         {pageType === 'lodge' ? 'City' : 'Location'}
                       </label>
-                      <select className="bg-transparent text-sm font-medium focus:outline-none w-full text-white/90 [&>option]:bg-gray-700 [&>option]:text-white">
+                      <select 
+                        className="bg-transparent text-xs xs:text-sm font-medium focus:outline-none w-full text-white/90 truncate [&>option]:bg-gray-800 [&>option]:text-white [&>option]:hover:bg-gray-600 [&>option]:hover:text-white [&>option]:focus:bg-gray-600 [&>option]:focus:text-white"
+                        style={{
+                          border: '1px solid rgba(255, 255, 255, 0.1)',
+                          borderRadius: '0.5rem',
+                          padding: '0.25rem 0.5rem'
+                        }}
+                      >
                         {selectedLocation === 'Canada' ? (
                           <>
                             <option value="">Select {pageType === 'lodge' ? 'City' : 'Location'}</option>
@@ -377,19 +384,19 @@ export const Hero = ({ selectedLocation, pageType }: HeroProps) => {
                   transition={{ duration: 0.2 }}
                 >
                   <div 
-                    className="flex items-center space-x-3 rounded-2xl p-5 transition-all duration-300 backdrop-blur-sm border"
+                    className="flex items-center space-x-2 xs:space-x-3 rounded-xl xs:rounded-2xl p-3 xs:p-4 sm:p-5 transition-all duration-300 backdrop-blur-sm border"
                     style={{ 
                       background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%)',
                       borderColor: 'rgba(255, 255, 255, 0.2)',
                       boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1)'
                     }}
                   >
-                    <CalendarIcon size={20} className="text-white/80" />
-                    <div className="flex-1">
+                    <CalendarIcon size={16} className="text-white/80 xs:w-5 xs:h-5" />
+                    <div className="flex-1 min-w-0">
                       <label className="text-xs block mb-1 text-white/70 font-medium text-left">Check-in</label>
                       <input 
                         type="date" 
-                        className="bg-transparent text-sm font-medium focus:outline-none w-full text-white/90 [&::-webkit-calendar-picker-indicator]:filter [&::-webkit-calendar-picker-indicator]:invert"
+                        className="bg-transparent text-xs xs:text-sm font-medium focus:outline-none w-full text-white/90 [&::-webkit-calendar-picker-indicator]:filter [&::-webkit-calendar-picker-indicator]:invert"
                       />
                     </div>
                   </div>
@@ -403,19 +410,19 @@ export const Hero = ({ selectedLocation, pageType }: HeroProps) => {
                   transition={{ duration: 0.2 }}
                 >
                   <div 
-                    className="flex items-center space-x-3 rounded-2xl p-5 transition-all duration-300 backdrop-blur-sm border"
+                    className="flex items-center space-x-2 xs:space-x-3 rounded-xl xs:rounded-2xl p-3 xs:p-4 sm:p-5 transition-all duration-300 backdrop-blur-sm border"
                     style={{ 
                       background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%)',
                       borderColor: 'rgba(255, 255, 255, 0.2)',
                       boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1)'
                     }}
                   >
-                    <CalendarIcon size={20} className="text-white/80" />
-                    <div className="flex-1">
+                    <CalendarIcon size={16} className="text-white/80 xs:w-5 xs:h-5" />
+                    <div className="flex-1 min-w-0">
                       <label className="text-xs block mb-1 text-white/70 font-medium text-left">Check-out</label>
                       <input 
                         type="date" 
-                        className="bg-transparent text-sm font-medium focus:outline-none w-full text-white/90 [&::-webkit-calendar-picker-indicator]:filter [&::-webkit-calendar-picker-indicator]:invert"
+                        className="bg-transparent text-xs xs:text-sm font-medium focus:outline-none w-full text-white/90 [&::-webkit-calendar-picker-indicator]:filter [&::-webkit-calendar-picker-indicator]:invert"
                       />
                     </div>
                   </div>
@@ -429,17 +436,24 @@ export const Hero = ({ selectedLocation, pageType }: HeroProps) => {
                   transition={{ duration: 0.2 }}
                 >
                   <div 
-                    className="flex items-center space-x-3 rounded-2xl p-5 transition-all duration-300 backdrop-blur-sm border"
+                    className="flex items-center space-x-2 xs:space-x-3 rounded-xl xs:rounded-2xl p-3 xs:p-4 sm:p-5 transition-all duration-300 backdrop-blur-sm border"
                     style={{ 
                       background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%)',
                       borderColor: 'rgba(255, 255, 255, 0.2)',
                       boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1)'
                     }}
                   >
-                    <UsersIcon size={20} className="text-white/80" />
-                    <div className="flex-1">
+                    <UsersIcon size={16} className="text-white/80 xs:w-5 xs:h-5" />
+                    <div className="flex-1 min-w-0">
                       <label className="text-xs block mb-1 text-white/70 font-medium text-left">Guests</label>
-                      <select className="bg-transparent text-sm font-medium focus:outline-none w-full text-white/90 [&>option]:bg-gray-700 [&>option]:text-white">
+                      <select 
+                        className="bg-transparent text-xs xs:text-sm font-medium focus:outline-none w-full text-white/90 truncate [&>option]:bg-gray-800 [&>option]:text-white [&>option]:hover:bg-gray-600 [&>option]:hover:text-white [&>option]:focus:bg-gray-600 [&>option]:focus:text-white"
+                        style={{
+                          border: '1px solid rgba(255, 255, 255, 0.1)',
+                          borderRadius: '0.5rem',
+                          padding: '0.25rem 0.5rem'
+                        }}
+                      >
                         <option value="1">1 Guest</option>
                         <option value="2">2 Guests</option>
                         <option value="3">3 Guests</option>
@@ -458,7 +472,7 @@ export const Hero = ({ selectedLocation, pageType }: HeroProps) => {
                   boxShadow: "0 20px 40px -12px rgba(164, 151, 96, 0.4)"
                 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-full py-5 rounded-2xl font-medium shadow-lg transition-all duration-300 flex items-center justify-center group relative overflow-hidden"
+                className="w-full py-3 xs:py-4 sm:py-5 rounded-xl xs:rounded-2xl font-medium shadow-lg transition-all duration-300 flex items-center justify-center group relative overflow-hidden"
                 style={{
                   background: 'linear-gradient(135deg, rgba(164, 151, 96, 0.9) 0%, rgba(178, 167, 124, 0.9) 100%)',
                   boxShadow: '0 8px 32px -8px rgba(164, 151, 96, 0.3)'
@@ -477,13 +491,13 @@ export const Hero = ({ selectedLocation, pageType }: HeroProps) => {
                 />
                 
                 <div className="relative z-10 flex items-center text-white">
-                  <SearchIcon size={20} className="mr-3 group-hover:scale-110 transition-transform" />
-                  <span className="text-lg">Search Available {pageType === 'lodge' ? 'Apartments' : 'Sites'}</span>
+                  <SearchIcon size={16} className="mr-2 xs:mr-3 group-hover:scale-110 transition-transform xs:w-5 xs:h-5" />
+                  <span className="text-sm xs:text-base sm:text-lg">Search Available {pageType === 'lodge' ? 'Apartments' : 'Sites'}</span>
                   <motion.div
                     whileHover={{ x: 8 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <ArrowRight size={18} className="ml-3 group-hover:scale-110 transition-transform" />
+                    <ArrowRight size={14} className="ml-2 xs:ml-3 group-hover:scale-110 transition-transform xs:w-4 xs:h-4" />
                   </motion.div>
                 </div>
               </motion.button>
