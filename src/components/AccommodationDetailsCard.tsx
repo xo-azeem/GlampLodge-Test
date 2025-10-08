@@ -237,7 +237,7 @@ export const AccommodationDetailsCard: React.FC<AccommodationDetailsCardProps> =
                      }}
                      onError={(e) => {
                        console.error('Image failed to load:', allImages[currentImageIndex]);
-                       e.currentTarget.src = '/src/assets/Listings/Murree/LivingRoom.png'; // Fallback image
+                       e.currentTarget.src = '/Listings/Murree/LivingRoom.png'; // Fallback image
                      }}
                    />
                   
