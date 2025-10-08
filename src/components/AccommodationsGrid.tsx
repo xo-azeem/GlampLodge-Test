@@ -136,7 +136,7 @@ export const AccommodationsGrid = ({
           viewport={{ once: true, margin: "-80px" }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 lg:gap-10 xl:gap-12"
         >
-          {accommodations.map((accommodation) => (
+          {accommodations.length > 0 ? accommodations.map((accommodation) => (
             <motion.div
               key={accommodation.id}
               variants={cardVariants}
@@ -177,7 +177,7 @@ export const AccommodationsGrid = ({
                   <motion.img
                     src={accommodation.image}
                     alt={accommodation.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain bg-gray-100"
                     whileHover={{ scale: 1.1 }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
                   />
@@ -279,7 +279,10 @@ export const AccommodationsGrid = ({
 
                   {/* Action Buttons */}
                   <div className="flex space-x-3 mt-auto">
-                    <motion.button
+                    <motion.a
+                      href={accommodation.airbnbLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       className="flex-1 py-3 px-4 rounded-xl transition-all duration-300 font-medium text-white flex items-center justify-center group"
@@ -288,9 +291,9 @@ export const AccommodationsGrid = ({
                         boxShadow: '0 4px 14px 0 rgba(0, 0, 0, 0.1)'
                       }}
                     >
-                      <span>Book Now</span>
+                      <span>Book on Airbnb</span>
                       <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
-                    </motion.button>
+                    </motion.a>
                     
                     <motion.button
                       whileHover={{ scale: 1.02 }}
@@ -309,7 +312,52 @@ export const AccommodationsGrid = ({
                 </div>
               </motion.div>
             </motion.div>
-          ))}
+          )) : (
+            <motion.div
+              variants={cardVariants}
+              className="col-span-full flex flex-col items-center justify-center py-16 px-8"
+            >
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="text-center"
+              >
+                <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
+                  <svg 
+                    className="w-12 h-12 text-primary" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round" 
+                      strokeWidth={2} 
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" 
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-bold text-text-primary mb-4">
+                  Coming Soon
+                </h3>
+                <p className="text-text-secondary text-lg max-w-md mx-auto leading-relaxed">
+                  We're working hard to bring you amazing accommodations in {selectedLocation}. 
+                  Stay tuned for exciting new properties coming your way!
+                </p>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.8 }}
+                  className="mt-8 flex items-center justify-center space-x-2 text-primary"
+                >
+                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                </motion.div>
+              </motion.div>
+            </motion.div>
+          )}
         </motion.div>
       </div>
 

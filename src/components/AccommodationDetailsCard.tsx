@@ -5,7 +5,6 @@ import {
   Star, 
   MapPin, 
   Calendar, 
-  Users, 
   Wifi, 
   Car, 
   Coffee, 
@@ -19,7 +18,6 @@ import {
   Heart,
   Share2,
   Phone,
-  Mail,
   ExternalLink
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
@@ -39,20 +37,16 @@ export const AccommodationDetailsCard: React.FC<AccommodationDetailsCardProps> =
   const { theme } = useTheme();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
-  // Mock additional images for the gallery
-  const additionalImages = [
-    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
-    'https://images.unsplash.com/photo-1521401830884-6c03c1c87ebb?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
-    'https://images.unsplash.com/photo-1533601017-dc61895e03c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
-    'https://images.unsplash.com/photo-1537225228614-56cc3556d7ed?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80'
-  ];
-
-  const allImages = accommodation ? [accommodation.image, ...additionalImages] : [];
+  // Use real images from accommodation data
+  const allImages = accommodation ? accommodation.images || [accommodation.image] : [];
 
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      // Reset image index when modal opens
+      setCurrentImageIndex(0);
     } else {
       document.body.style.overflow = 'unset';
     }
@@ -62,12 +56,45 @@ export const AccommodationDetailsCard: React.FC<AccommodationDetailsCardProps> =
     };
   }, [isOpen]);
 
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (!isOpen) return;
+      
+      if (event.key === 'ArrowLeft') {
+        prevImage();
+      } else if (event.key === 'ArrowRight') {
+        nextImage();
+      } else if (event.key === 'Escape') {
+        if (isFullscreen) {
+          setIsFullscreen(false);
+        } else {
+          onClose();
+        }
+      } else if (event.key === 'f' || event.key === 'F') {
+        setIsFullscreen(!isFullscreen);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, allImages.length, onClose, isFullscreen]);
+
   const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % allImages.length);
+    if (allImages.length > 1) {
+      setCurrentImageIndex((prev) => (prev + 1) % allImages.length);
+    }
   };
 
   const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
+    if (allImages.length > 1) {
+      setCurrentImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
+    }
   };
 
   const getFeatureIcon = (feature: string) => {
@@ -196,15 +223,23 @@ export const AccommodationDetailsCard: React.FC<AccommodationDetailsCardProps> =
               <div className="flex-1 overflow-y-auto">
                 {/* Image Gallery */}
                 <div className="relative h-80 sm:h-96 lg:h-[500px] overflow-hidden">
-                  <motion.img
-                    key={currentImageIndex}
-                    src={allImages[currentImageIndex]}
-                    alt={accommodation.title}
-                    className="w-full h-full object-cover"
-                    initial={{ opacity: 0, scale: 1.1 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
-                  />
+                   <motion.img
+                     key={currentImageIndex}
+                     src={allImages[currentImageIndex]}
+                     alt={`${accommodation.title} - Image ${currentImageIndex + 1}`}
+                     className="w-full h-full object-contain cursor-pointer bg-gray-100"
+                     initial={{ opacity: 0, scale: 1.1 }}
+                     animate={{ opacity: 1, scale: 1 }}
+                     transition={{ duration: 0.5 }}
+                     onClick={(e) => {
+                       e.stopPropagation();
+                       setIsFullscreen(true);
+                     }}
+                     onError={(e) => {
+                       console.error('Image failed to load:', allImages[currentImageIndex]);
+                       e.currentTarget.src = '/src/assets/Listings/Murree/LivingRoom.png'; // Fallback image
+                     }}
+                   />
                   
                   {/* Image Navigation */}
                   {allImages.length > 1 && (
@@ -213,7 +248,8 @@ export const AccommodationDetailsCard: React.FC<AccommodationDetailsCardProps> =
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         onClick={prevImage}
-                        className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-md bg-white/20 text-white hover:bg-white/30 transition-colors"
+                        className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-md bg-black/30 text-white hover:bg-black/50 transition-all duration-200 z-10"
+                        style={{ backdropFilter: 'blur(8px)' }}
                       >
                         <ChevronLeft size={24} />
                       </motion.button>
@@ -222,7 +258,8 @@ export const AccommodationDetailsCard: React.FC<AccommodationDetailsCardProps> =
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         onClick={nextImage}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-md bg-white/20 text-white hover:bg-white/30 transition-colors"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-md bg-black/30 text-white hover:bg-black/50 transition-all duration-200 z-10"
+                        style={{ backdropFilter: 'blur(8px)' }}
                       >
                         <ChevronRight size={24} />
                       </motion.button>
@@ -230,19 +267,44 @@ export const AccommodationDetailsCard: React.FC<AccommodationDetailsCardProps> =
                   )}
 
                   {/* Image Indicators */}
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
-                    {allImages.map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setCurrentImageIndex(index)}
-                        className={`w-2 h-2 rounded-full transition-all ${
-                          index === currentImageIndex 
-                            ? 'bg-white scale-125' 
-                            : 'bg-white/50 hover:bg-white/75'
-                        }`}
-                      />
-                    ))}
-                  </div>
+                  {allImages.length > 1 && (
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-10">
+                      {allImages.map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setCurrentImageIndex(index)}
+                          className={`w-3 h-3 rounded-full transition-all duration-200 ${
+                            index === currentImageIndex 
+                              ? 'bg-white scale-125 shadow-lg' 
+                              : 'bg-white/50 hover:bg-white/75 hover:scale-110'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  )}
+
+                   {/* Image Counter and Fullscreen Button */}
+                   <div className="absolute top-4 right-4 flex items-center space-x-2">
+                     {allImages.length > 1 && (
+                       <div className="bg-black/50 text-white px-3 py-1 rounded-full text-sm font-medium backdrop-blur-sm">
+                         {currentImageIndex + 1} / {allImages.length}
+                       </div>
+                     )}
+                     <motion.button
+                       whileHover={{ scale: 1.1 }}
+                       whileTap={{ scale: 0.9 }}
+                       onClick={(e) => {
+                         e.stopPropagation();
+                         setIsFullscreen(true);
+                       }}
+                       className="p-3 bg-black/70 text-white rounded-full backdrop-blur-sm hover:bg-black/90 transition-all duration-200 z-20"
+                       title="View fullscreen (Press F)"
+                     >
+                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                       </svg>
+                     </motion.button>
+                   </div>
 
                   {/* Gradient Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
@@ -357,7 +419,10 @@ export const AccommodationDetailsCard: React.FC<AccommodationDetailsCardProps> =
                            : 'rgba(0, 0, 0, 0.1)' 
                        }}>
                     <div className="flex flex-col sm:flex-row gap-4">
-                      <motion.button
+                      <motion.a
+                        href={accommodation?.airbnbLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         className="flex-1 py-4 px-6 rounded-2xl font-semibold text-white flex items-center justify-center space-x-2"
@@ -367,8 +432,8 @@ export const AccommodationDetailsCard: React.FC<AccommodationDetailsCardProps> =
                         }}
                       >
                         <Calendar size={20} />
-                        <span>Book Now</span>
-                      </motion.button>
+                        <span>Book on Airbnb</span>
+                      </motion.a>
                       
                       <motion.button
                         whileHover={{ scale: 1.02 }}
@@ -383,7 +448,10 @@ export const AccommodationDetailsCard: React.FC<AccommodationDetailsCardProps> =
                         <span>Contact</span>
                       </motion.button>
                       
-                      <motion.button
+                      <motion.a
+                        href={accommodation?.airbnbLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         className="px-6 py-4 border-2 rounded-2xl font-semibold flex items-center justify-center space-x-2"
@@ -393,16 +461,149 @@ export const AccommodationDetailsCard: React.FC<AccommodationDetailsCardProps> =
                         }}
                       >
                         <ExternalLink size={20} />
-                        <span>View More</span>
-                      </motion.button>
+                        <span>View on Airbnb</span>
+                      </motion.a>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
-  );
-};
+           </motion.div>
+         </>
+       )}
+
+       {/* Fullscreen Image Modal */}
+       <AnimatePresence>
+         {isFullscreen && (
+           <motion.div
+             initial={{ opacity: 0 }}
+             animate={{ opacity: 1 }}
+             exit={{ opacity: 0 }}
+             className="fixed inset-0 z-[60] flex items-center justify-center"
+             style={{ background: 'rgba(0, 0, 0, 0.95)' }}
+             onClick={() => setIsFullscreen(false)}
+           >
+             {/* Close Button */}
+             <motion.button
+               initial={{ opacity: 0, scale: 0.8 }}
+               animate={{ opacity: 1, scale: 1 }}
+               exit={{ opacity: 0, scale: 0.8 }}
+               whileHover={{ scale: 1.1 }}
+               whileTap={{ scale: 0.9 }}
+               onClick={() => setIsFullscreen(false)}
+               className="absolute top-6 right-6 p-3 bg-black/50 text-white rounded-full backdrop-blur-sm hover:bg-black/70 transition-all duration-200 z-10"
+             >
+               <X size={24} />
+             </motion.button>
+
+             {/* Fullscreen Image */}
+             <motion.div
+               initial={{ scale: 0.8, opacity: 0 }}
+               animate={{ scale: 1, opacity: 1 }}
+               exit={{ scale: 0.8, opacity: 0 }}
+               transition={{ duration: 0.3 }}
+               className="relative flex items-center justify-center"
+               onClick={(e) => e.stopPropagation()}
+               style={{ 
+                 width: '100vw', 
+                 height: '100vh',
+                 maxWidth: '100vw',
+                 maxHeight: '100vh'
+               }}
+             >
+               <motion.img
+                 key={`fullscreen-${currentImageIndex}`}
+                 src={allImages[currentImageIndex]}
+                 alt={`${accommodation?.title} - Full View`}
+                 className="max-w-full max-h-full object-contain"
+                 style={{
+                   maxWidth: '100vw',
+                   maxHeight: '100vh',
+                   width: 'auto',
+                   height: 'auto'
+                 }}
+                 initial={{ opacity: 0 }}
+                 animate={{ opacity: 1 }}
+                 transition={{ duration: 0.3 }}
+               />
+
+               {/* Navigation Controls */}
+               {allImages.length > 1 && (
+                 <>
+                   <motion.button
+                     initial={{ opacity: 0, x: -20 }}
+                     animate={{ opacity: 1, x: 0 }}
+                     whileHover={{ scale: 1.1 }}
+                     whileTap={{ scale: 0.9 }}
+                     onClick={(e) => {
+                       e.stopPropagation();
+                       prevImage();
+                     }}
+                     className="absolute left-8 top-1/2 -translate-y-1/2 p-4 bg-black/60 text-white rounded-full backdrop-blur-sm hover:bg-black/80 transition-all duration-200 z-10"
+                   >
+                     <ChevronLeft size={28} />
+                   </motion.button>
+                   
+                   <motion.button
+                     initial={{ opacity: 0, x: 20 }}
+                     animate={{ opacity: 1, x: 0 }}
+                     whileHover={{ scale: 1.1 }}
+                     whileTap={{ scale: 0.9 }}
+                     onClick={(e) => {
+                       e.stopPropagation();
+                       nextImage();
+                     }}
+                     className="absolute right-8 top-1/2 -translate-y-1/2 p-4 bg-black/60 text-white rounded-full backdrop-blur-sm hover:bg-black/80 transition-all duration-200 z-10"
+                   >
+                     <ChevronRight size={28} />
+                   </motion.button>
+                 </>
+               )}
+
+               {/* Image Counter */}
+               {allImages.length > 1 && (
+                 <motion.div
+                   initial={{ opacity: 0, y: 20 }}
+                   animate={{ opacity: 1, y: 0 }}
+                   className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-black/60 text-white px-6 py-3 rounded-full text-lg font-medium backdrop-blur-sm z-10"
+                 >
+                   {currentImageIndex + 1} / {allImages.length}
+                 </motion.div>
+               )}
+
+               {/* Thumbnail Strip */}
+               {allImages.length > 1 && (
+                 <motion.div
+                   initial={{ opacity: 0, y: 20 }}
+                   animate={{ opacity: 1, y: 0 }}
+                   className="absolute bottom-20 left-1/2 -translate-x-1/2 flex space-x-3 z-10"
+                 >
+                   {allImages.map((image, index) => (
+                     <button
+                       key={index}
+                       onClick={(e) => {
+                         e.stopPropagation();
+                         setCurrentImageIndex(index);
+                       }}
+                       className={`w-16 h-16 rounded-lg overflow-hidden transition-all duration-200 ${
+                         index === currentImageIndex 
+                           ? 'ring-3 ring-white scale-110 shadow-lg' 
+                           : 'opacity-60 hover:opacity-100 hover:scale-105'
+                       }`}
+                     >
+                       <img
+                         src={image}
+                         alt={`Thumbnail ${index + 1}`}
+                         className="w-full h-full object-cover"
+                       />
+                     </button>
+                   ))}
+                 </motion.div>
+               )}
+             </motion.div>
+           </motion.div>
+         )}
+       </AnimatePresence>
+     </AnimatePresence>
+   );
+ };

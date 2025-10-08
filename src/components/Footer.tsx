@@ -55,7 +55,7 @@ export const Footer = () => {
   const pakistanLocations = [
     'Lahore, Punjab',
     'Murree, Punjab',
-    'Patriat, Punjab',
+    'Patriata, Punjab',
     'Bhurban, Punjab',
   ];
 
