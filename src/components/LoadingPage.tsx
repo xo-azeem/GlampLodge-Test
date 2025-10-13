@@ -59,6 +59,20 @@ export const LoadingPage: React.FC<LoadingPageProps> = ({ onLoadingComplete }) =
         exit={{ opacity: 0, scale: 1.1 }}
         transition={{ duration: 0.5 }}
         className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-[#0a0a0a] via-[#1a1a1a] to-[#0a0a0a] text-white overflow-hidden"
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          width: '100vw',
+          height: '100vh',
+          margin: 0,
+          padding: 0,
+          border: 'none',
+          outline: 'none',
+          boxSizing: 'border-box'
+        }}
       >
         {/* Animated Background */}
         <div className="absolute inset-0">

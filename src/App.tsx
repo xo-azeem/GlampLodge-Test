@@ -14,13 +14,14 @@ export function App() {
   const [selectedLocation, setSelectedLocation] = useState('Canada');
   const [isLoading, setIsLoading] = useState(true);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [mainPageReady, setMainPageReady] = useState(false);
 
   // Handle initial loading
   useEffect(() => {
     // Only show loading page on initial load (not on route changes)
     if (isInitialLoad) {
-      // Preload critical assets
-      const preloadAssets = async () => {
+      // Preload critical assets and prepare main page
+      const preloadEverything = async () => {
         try {
           // Preload images
           const imageUrls = [
@@ -42,40 +43,52 @@ export function App() {
           // Wait for images to load
           await Promise.allSettled(imagePromises);
           
-          // Additional delay to ensure smooth transition
-          await new Promise(resolve => setTimeout(resolve, 1000));
+          // Additional delay to ensure all components are ready
+          await new Promise(resolve => setTimeout(resolve, 1500));
           
-          setIsLoading(false);
-          setIsInitialLoad(false);
+          setMainPageReady(true);
         } catch (error) {
           console.log('Asset preloading completed with some errors:', error);
           // Continue even if some assets fail to load
-          setIsLoading(false);
-          setIsInitialLoad(false);
+          setMainPageReady(true);
         }
       };
 
-      preloadAssets();
+      preloadEverything();
     }
   }, [isInitialLoad]);
 
   const handleLoadingComplete = () => {
-    setIsLoading(false);
+    if (mainPageReady) {
+      setIsLoading(false);
+      setIsInitialLoad(false);
+    }
   };
+
+  // Show loading page immediately on initial load
+  if (isLoading && isInitialLoad) {
+    return (
+      <ThemeProvider>
+        <LoadingPage onLoadingComplete={handleLoadingComplete} />
+        {/* Load main page components in background - hidden */}
+        <div style={{ position: 'absolute', left: '-9999px', top: '-9999px', visibility: 'hidden' }}>
+          <Router future={{ v7_relativeSplatPath: true }}>
+            <MainLayout selectedLocation={selectedLocation} setSelectedLocation={setSelectedLocation}>
+              <Home selectedLocation={selectedLocation} />
+            </MainLayout>
+          </Router>
+        </div>
+      </ThemeProvider>
+    );
+  }
 
   return (
     <ThemeProvider>
       <Router future={{ v7_relativeSplatPath: true }}>
-        {/* Show loading page only on initial load */}
-        {isLoading && isInitialLoad && (
-          <LoadingPage onLoadingComplete={handleLoadingComplete} />
-        )}
+        {/* Automatic scroll to top on route changes and location changes */}
+        <RouteScrollToTop selectedLocation={selectedLocation} />
         
-        {/* Main app content - loads in background */}
-        <div className={`w-full min-h-screen bg-background text-text transition-colors ${isLoading && isInitialLoad ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-          {/* Automatic scroll to top on route changes and location changes */}
-          <RouteScrollToTop selectedLocation={selectedLocation} />
-          
+        <div className="w-full min-h-screen bg-background text-text transition-colors">
           <Routes>
             <Route path="/" element={
               <MainLayout selectedLocation={selectedLocation} setSelectedLocation={setSelectedLocation}>
