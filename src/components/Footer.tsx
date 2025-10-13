@@ -6,14 +6,13 @@ import {
   InstagramIcon, 
   TwitterIcon, 
   LinkedinIcon, 
-  MapPinIcon, 
   PhoneIcon, 
   MailIcon, 
   ArrowRightIcon, 
   HeartIcon,
-  TreePineIcon,
   Send
 } from 'lucide-react';
+import { FlagIcon } from './FlagIcon';
 
 export const Footer = () => {
   const containerVariants = {
@@ -46,16 +45,13 @@ export const Footer = () => {
     { icon: LinkedinIcon, href: '#', label: 'LinkedIn' }
   ];
 
-  const canadaLocations = [
-    'Mississauga, ON',
-    'Niagra Falls, ON',
-    'Quebec City, QC',
+  const internationalLocations = [
+    'Coming Soon',
   ];
 
   const pakistanLocations = [
     'Lahore, Punjab',
     'Murree, Punjab',
-    'Patriata, Punjab',
     'Bhurban, Punjab',
   ];
 
@@ -180,7 +176,7 @@ export const Footer = () => {
                   </Link>
                 </div>
                 <p className="text-text-secondary leading-relaxed text-lg font-light pl-5">
-                  Connecting travelers with premium accommodations across Canada and Pakistan. 
+                  Connecting travelers with premium accommodations across Pakistan and internationally. 
                   From city apartments to mountain retreats, we make every stay exceptional.
                 </p>
               </div>
@@ -213,13 +209,13 @@ export const Footer = () => {
               </div>
             </motion.div>
 
-          {/* Canada Locations */}
+          {/* International Locations */}
             <motion.div variants={itemVariants}>
               <h4 className="text-lg font-bold mb-6 flex items-center text-text">
-              🇨🇦 Canada Locations
+              🌍 International Locations
             </h4>
             <ul className="space-y-3">
-                {canadaLocations.map((location, index) => (
+                {internationalLocations.map((location, index) => (
                   <motion.li
                     key={location}
                     initial={{ opacity: 0, x: -20 }}
@@ -243,7 +239,7 @@ export const Footer = () => {
           {/* Pakistan Locations */}
             <motion.div variants={itemVariants}>
               <h4 className="text-lg font-bold mb-6 flex items-center text-text">
-              🇵🇰 Pakistan Locations
+              <FlagIcon country="Pakistan" size={20} className="mr-2" />Pakistan Locations
             </h4>
             <ul className="space-y-3">
                 {pakistanLocations.map((location, index) => (

@@ -2,23 +2,25 @@ import { motion } from 'framer-motion';
 import { StarIcon, MapPinIcon, ArrowRight } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { Accommodation } from '../data/glampingAccommodations';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, useMemo } from 'react';
 import { AccommodationDetailsCard } from './AccommodationDetailsCard';
+import { OptimizedImage } from './OptimizedImage';
+import { AccommodationCardSkeleton } from './AccommodationCardSkeleton';
 import { FlagIcon } from './FlagIcon';
 
-interface AccommodationsGridProps {
+interface OptimizedAccommodationsGridProps {
   accommodations: Accommodation[];
   selectedLocation: string;
   title: ReactNode;
   description: string;
 }
 
-export const AccommodationsGrid = ({
+export const OptimizedAccommodationsGrid = ({
   accommodations,
   selectedLocation,
   title,
   description
-}: AccommodationsGridProps) => {
+}: OptimizedAccommodationsGridProps) => {
   const { theme } = useTheme();
   const [selectedAccommodation, setSelectedAccommodation] = useState<Accommodation | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
@@ -33,38 +35,41 @@ export const AccommodationsGrid = ({
     setSelectedAccommodation(null);
   };
 
+  // Memoized accommodations to prevent unnecessary re-renders
+  const memoizedAccommodations = useMemo(() => accommodations, [accommodations]);
+
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3
+        staggerChildren: 0.1, // Reduced stagger for faster appearance
+        delayChildren: 0.1
       }
     }
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 60, scale: 0.95 },
+    hidden: { opacity: 0, y: 30, scale: 0.98 },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
       transition: {
-        duration: 0.8,
+        duration: 0.5, // Faster animation
         ease: [0.25, 0.1, 0.25, 1]
       }
     }
   };
 
   const headerVariants = {
-    hidden: { opacity: 0, y: 40 },
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.8,
+        duration: 0.6,
         ease: [0.25, 0.1, 0.25, 1]
       }
     }
@@ -72,7 +77,6 @@ export const AccommodationsGrid = ({
 
   return (
     <section 
-      key={`accommodations-${selectedLocation}`}
       id="accommodations" 
       className="py-12 xs:py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32 px-3 xs:px-4 sm:px-6 relative transition-all duration-300"
       style={{
@@ -94,7 +98,7 @@ export const AccommodationsGrid = ({
           <motion.div 
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
+            transition={{ delay: 0.1, duration: 0.4 }}
             className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium mb-6 backdrop-blur-xl border transition-all duration-300"
             style={{
               background: `rgba(var(--primary-rgb), ${theme === 'dark' ? '0.15' : '0.1'})`,
@@ -115,7 +119,7 @@ export const AccommodationsGrid = ({
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
             className="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-thin mb-3 xs:mb-4 sm:mb-6 md:mb-8 lg:mb-10"
             style={{ color: 'var(--text)' }}
           >
@@ -126,7 +130,7 @@ export const AccommodationsGrid = ({
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
             className="text-text-secondary text-sm xs:text-base sm:text-lg md:text-xl max-w-4xl mx-auto font-light leading-relaxed px-2"
           >
             {description}
@@ -135,14 +139,13 @@ export const AccommodationsGrid = ({
 
         {/* Accommodations Grid */}
         <motion.div
-          key={`grid-${selectedLocation}`}
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 lg:gap-10 xl:gap-12"
         >
-          {accommodations.length > 0 ? accommodations.map((accommodation) => (
+          {memoizedAccommodations.length > 0 ? memoizedAccommodations.map((accommodation, index) => (
             <motion.div
               key={accommodation.id}
               variants={cardVariants}
@@ -178,14 +181,15 @@ export const AccommodationsGrid = ({
                     : `rgba(var(--border-rgb), 0.4)`;
                 }}
               >
-                {/* Image Section */}
+                {/* Optimized Image Section */}
                 <div className="aspect-[5/4] xs:aspect-[4/3] sm:aspect-[16/10] md:aspect-[5/4] lg:aspect-[4/3] xl:aspect-[16/10] overflow-hidden relative">
-                  <motion.img
+                  <OptimizedImage
                     src={accommodation.image}
                     alt={accommodation.title}
-                    className="w-full h-full object-contain bg-gray-100"
+                    className="w-full h-full"
                     whileHover={{ scale: 1.1 }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
+                    priority={index < 3} // Prioritize first 3 images
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent group-hover:from-black/40 transition-all duration-500" />
                   

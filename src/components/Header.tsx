@@ -4,6 +4,7 @@ import { MenuIcon, XIcon, SunIcon, MoonIcon, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../hooks/useAuth';
+import { FlagIcon } from './FlagIcon';
 
 interface HeaderProps {
   selectedLocation: string;
@@ -93,7 +94,7 @@ export const Header = ({
                     border: '1px solid rgba(var(--border-rgb), 0.3)'
                   }}
                 >
-                  {['Canada', 'Pakistan'].map((country) => (
+                  {['International', 'Pakistan'].map((country) => (
                     <motion.button 
                       key={country}
                       onClick={() => setSelectedLocation(country)} 
@@ -110,7 +111,8 @@ export const Header = ({
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
-                      {country === 'Canada' ? '🇨🇦' : '🇵🇰'} {country}
+                      <FlagIcon country={country as 'Pakistan' | 'International'} size={16} className="mr-1" />
+                      {country}
                     </motion.button>
                   ))}
                 </motion.div>
@@ -335,7 +337,7 @@ export const Header = ({
                     transition={{ delay: 0.2, duration: 0.3 }}
                     className="flex space-x-2 mb-6"
                   >
-                    {['Canada', 'Pakistan'].map((country) => (
+                    {['International', 'Pakistan'].map((country) => (
                       <motion.button 
                         key={country}
                         onClick={() => setSelectedLocation(country)} 
@@ -353,7 +355,8 @@ export const Header = ({
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >
-                        {country === 'Canada' ? '🇨🇦' : '🇵🇰'} {country}
+                        <FlagIcon country={country as 'Pakistan' | 'International'} size={16} className="mr-1" />
+                        {country}
                       </motion.button>
                     ))}
                   </motion.div>

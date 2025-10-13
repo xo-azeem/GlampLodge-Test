@@ -146,9 +146,6 @@ export const GlampLodge = ({ selectedLocation }: GlampLodgeProps) => {
       {/* Accommodations Section */}
       <GlampingAccommodations selectedLocation={selectedLocation} />
 
-      {/* Features Section */}
-      {/* <Features /> */}
-      
       {/* Call to Action */}
       <CallToAction />
     </div>

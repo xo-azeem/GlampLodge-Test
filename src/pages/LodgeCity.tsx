@@ -146,9 +146,6 @@ export const LodgeCity = ({ selectedLocation }: LodgeCityProps) => {
       {/* Accommodations Section */}
       <LodgeCityAccommodations selectedLocation={selectedLocation} />
 
-      {/* Features Section */}
-      {/* <Features /> */}
-      
       {/* Call to Action */}
       <CallToAction />
     </div>

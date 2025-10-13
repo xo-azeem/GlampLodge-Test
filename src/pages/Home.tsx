@@ -1,15 +1,12 @@
 import React, { useState, useEffect, useRef, Suspense } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { 
-  OrbitControls, 
   Sphere, 
   MeshDistortMaterial, 
   Float, 
-  Text3D, 
-  Center,
   Environment,
   Stars,
   Cloud
@@ -20,16 +17,12 @@ import {
   ChevronRight, 
   Building, 
   TreePine, 
-  Star, 
-  Check, 
   ArrowRight, 
-  Sparkles, 
   Heart, 
-  Globe,
   MapPin,
-  Users,
   Award
 } from 'lucide-react';
+import { FlagIcon } from '../components/FlagIcon';
 
 interface HomeProps {
   selectedLocation: string;
@@ -45,7 +38,7 @@ class Scene3DErrorBoundary extends React.Component<
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error: any) {
+  static getDerivedStateFromError() {
     return { hasError: true };
   }
 
@@ -61,8 +54,6 @@ class Scene3DErrorBoundary extends React.Component<
     return this.props.children;
   }
 }
-
-
 
 // 3D Background Scene Component - Stars and Clouds only (for Hero section)
 const BackgroundScene = React.memo(() => {
@@ -336,86 +327,11 @@ const BackgroundSceneWithSpheres = React.memo(() => {
 
 BackgroundScene.displayName = 'BackgroundScene';
 
-// Spline 3D Model Component - Temporarily disabled for debugging
-/*
-const Spline3DModel = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
-
-  const handleLoad = () => {
-    console.log('Spline model loaded successfully');
-    setIsLoading(false);
-  };
-
-  const handleError = (error: any) => {
-    console.error('Spline model error:', error);
-    setHasError(true);
-    setIsLoading(false);
-  };
-
-  if (hasError) {
-    return (
-      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#0a0a0a] to-[#1a1a1a] rounded-2xl">
-        <div className="text-center">
-          <div className="text-4xl mb-4">🎨</div>
-          <p className="text-gray-400">3D Model unavailable</p>
-          <p className="text-gray-500 text-sm mt-2">Please try refreshing the page</p>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="relative w-full h-full rounded-2xl overflow-hidden">
-      {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#0a0a0a] to-[#1a1a1a] z-10">
-          <motion.div
-            animate={{ 
-              rotate: 360,
-              scale: [1, 1.1, 1]
-            }}
-            transition={{ 
-              rotate: { duration: 1.5, repeat: Infinity, ease: "linear" },
-              scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
-            }}
-            className="w-8 h-8 border-2 border-[#a49760] border-t-transparent rounded-full"
-          />
-        </div>
-      )}
-      <div className="w-full h-full">
-        {(() => {
-          try {
-            return (
-              <Spline
-                scene="https://prod.spline.design/AYEHlRRQDSc0D6mb/scene.splinecode"
-                onLoad={handleLoad}
-                onError={handleError}
-              />
-            );
-          } catch (error) {
-            console.error('Spline component error:', error);
-            setHasError(true);
-            return (
-              <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#0a0a0a] to-[#1a1a1a]">
-                <div className="text-center">
-                  <div className="text-4xl mb-4">⚠️</div>
-                  <p className="text-gray-400">Failed to load 3D model</p>
-                </div>
-              </div>
-            );
-          }
-        })()}
-      </div>
-    </div>
-  );
-};
-*/
-
 // 3D Loading Fallback compatible with R3F Canvas
 const Loader3D = () => {
   const meshRef = useRef<THREE.Mesh>(null);
   
-  useFrame((state) => {
+  useFrame(() => {
     if (meshRef.current) {
       meshRef.current.rotation.x += 0.02;
       meshRef.current.rotation.y += 0.02;
@@ -546,7 +462,7 @@ const Interactive3DCard = ({ children, className = "" }: Interactive3DCardProps)
   );
 };
 
-export const Home = ({ selectedLocation }: HomeProps) => {
+export const Home = ({ selectedLocation: _selectedLocation }: HomeProps) => {
   const { scrollYProgress } = useScroll();
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const { theme } = useTheme();
@@ -801,7 +717,7 @@ export const Home = ({ selectedLocation }: HomeProps) => {
                  animate={{ opacity: 0.95 }}
                  transition={{ delay: 1.2, duration: 1 }}
                >
-                 Where Dreams Meet Adventure in {selectedLocation}
+                 Where Dreams Meet Adventure in Pakistan
                </motion.p>
              </motion.div>
            </div>
@@ -1186,7 +1102,7 @@ export const Home = ({ selectedLocation }: HomeProps) => {
                 {
                   icon: MapPin,
                   title: "Prime Locations",
-                  description: "Perfectly positioned in Canada and Pakistan's most sought-after destinations, from Montreal to Murree.",
+                  description: "Perfectly positioned in Pakistan and internationally in the most sought-after destinations.",
                   delay: 0.2,
                   color: "#6b7f3e"
                 },
@@ -1331,7 +1247,7 @@ export const Home = ({ selectedLocation }: HomeProps) => {
                color: theme === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(var(--text-rgb), 0.8)'
              }}
            >
-             Join thousands who've discovered that luxury and adventure aren't opposites — they're perfect partners waiting in Canada and Pakistan.
+             Join thousands who've discovered that luxury and adventure aren't opposites — they're perfect partners waiting in Pakistan and internationally.
            </motion.p>
            
             <Interactive3DCard>
@@ -1431,8 +1347,8 @@ export const Home = ({ selectedLocation }: HomeProps) => {
              transition={{ delay: 0.6, duration: 0.8 }}
            >
              {[
-               { country: "Canada", cities: "Montreal • Toronto", flag: "🇨🇦" },
-               { country: "Pakistan", cities: "Lahore • Murree", flag: "🇵🇰" }
+               { country: "International", cities: "Canada", flag: <FlagIcon country="International" size={24} /> },
+               { country: "Pakistan", cities: "Lahore • Murree", flag: <FlagIcon country="Pakistan" size={24} /> }
              ].map((location, index) => (
                <motion.div
                  key={index}

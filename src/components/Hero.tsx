@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { SearchIcon, CalendarIcon, UsersIcon, Building, TreePine, ArrowRight } from 'lucide-react';
+import { FlagIcon } from './FlagIcon';
 
 interface HeroProps {
   selectedLocation: string;
@@ -40,10 +41,10 @@ export const Hero = ({ selectedLocation, pageType }: HeroProps) => {
 
   const getHeroContent = (): HeroContent => {
     if (pageType === 'lodge') {
-      if (selectedLocation === 'Canada') {
+      if (selectedLocation === 'International') {
         return {
           title: 'Urban Sophistication',
-          subtitle: "Canada's most vibrant cities await your arrival",
+          subtitle: "The world's most vibrant cities await your arrival",
           bgImage: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
           searchTitle: 'Find Your Perfect City Escape',
           icon: Building
@@ -58,10 +59,10 @@ export const Hero = ({ selectedLocation, pageType }: HeroProps) => {
         };
       }
     } else { // glamp
-      if (selectedLocation === 'Canada') {
+      if (selectedLocation === 'International') {
         return {
           title: 'Nature\'s Luxury',
-          subtitle: 'Where Canada\'s wilderness meets uncompromising comfort',
+          subtitle: 'Where the world\'s wilderness meets uncompromising comfort',
           bgImage: 'https://images.unsplash.com/photo-1537225228614-56cc3556d7ed?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
           searchTitle: 'Find Your Perfect Nature Escape',
           icon: TreePine
@@ -220,7 +221,7 @@ export const Hero = ({ selectedLocation, pageType }: HeroProps) => {
             transition={{ duration: 0.2 }}
           >
             <IconComponent size={16} className="mr-2" style={{ color: 'var(--primary)' }} />
-            {pageType === 'lodge' ? 'LodgeCity' : 'GlampLodge'} | {selectedLocation === 'Canada' ? '🇨🇦 Canada' : '🇵🇰 Pakistan'}
+            {pageType === 'lodge' ? 'LodgeCity' : 'GlampLodge'} | {selectedLocation === 'International' ? <><FlagIcon country="International" size={14} className="mr-1" />International</> : <><FlagIcon country="Pakistan" size={14} className="mr-1" />Pakistan</>}
           </motion.span>
         </motion.div>
 
@@ -356,7 +357,7 @@ export const Hero = ({ selectedLocation, pageType }: HeroProps) => {
                           padding: '0.25rem 0.5rem'
                         }}
                       >
-                        {selectedLocation === 'Canada' ? (
+                        {selectedLocation === 'International' ? (
                           <>
                             <option value="">Select {pageType === 'lodge' ? 'City' : 'Location'}</option>
                             <option value="toronto">{pageType === 'lodge' ? 'Toronto' : 'Algonquin Park'}</option>

@@ -11,50 +11,48 @@ import { RouteScrollToTop, ScrollToTopButton } from './components/ScrollToTop';
 import { LoadingPage } from './components/LoadingPage';
 
 export function App() {
-  const [selectedLocation, setSelectedLocation] = useState('Canada');
+  const [selectedLocation, setSelectedLocation] = useState('International');
   const [isLoading, setIsLoading] = useState(true);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [mainPageReady, setMainPageReady] = useState(false);
 
   // Handle initial loading
   useEffect(() => {
-    // Only show loading page on initial load (not on route changes)
     if (isInitialLoad) {
-      // Preload critical assets and prepare main page
-      const preloadEverything = async () => {
+      const preloadAssets = async () => {
         try {
-          // Preload images
           const imageUrls = [
             'https://images.unsplash.com/photo-1537225228614-56cc3556d7ed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
             'https://images.unsplash.com/photo-1464983953574-0892a716854b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
             'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
-            'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80'
+            'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+            '/Listings/Murree/LivingRoom.png',
+            '/Listings/Murree/LivingRoom2.png',
+            '/Listings/Murree/Kitchen.png',
+            '/Listings/Bhurban/LivingRoom.png',
+            '/Listings/Bhurban/Bedroom1.png',
+            '/Listings/Bhurban/Kitchen.png'
           ];
 
-          const imagePromises = imageUrls.map(url => {
-            return new Promise((resolve, reject) => {
+          const imagePromises = imageUrls.map(url => 
+            new Promise((resolve, reject) => {
               const img = new Image();
               img.onload = resolve;
               img.onerror = reject;
               img.src = url;
-            });
-          });
+            })
+          );
 
-          // Wait for images to load
           await Promise.allSettled(imagePromises);
-          
-          // Additional delay to ensure all components are ready
           await new Promise(resolve => setTimeout(resolve, 1500));
-          
           setMainPageReady(true);
         } catch (error) {
           console.log('Asset preloading completed with some errors:', error);
-          // Continue even if some assets fail to load
           setMainPageReady(true);
         }
       };
 
-      preloadEverything();
+      preloadAssets();
     }
   }, [isInitialLoad]);
 

@@ -97,6 +97,7 @@ export const AccommodationDetailsCard: React.FC<AccommodationDetailsCardProps> =
     }
   };
 
+
   const getFeatureIcon = (feature: string) => {
     const featureLower = feature.toLowerCase();
     if (featureLower.includes('wifi') || featureLower.includes('internet')) return <Wifi size={20} />;
@@ -115,7 +116,7 @@ export const AccommodationDetailsCard: React.FC<AccommodationDetailsCardProps> =
   return (
     <AnimatePresence>
       {isOpen && (
-        <>
+        <div key="accommodation-modal">
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -246,7 +247,6 @@ export const AccommodationDetailsCard: React.FC<AccommodationDetailsCardProps> =
                     <>
                       <motion.button
                         whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
                         onClick={prevImage}
                         className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-md bg-black/30 text-white hover:bg-black/50 transition-all duration-200 z-10"
                         style={{ backdropFilter: 'blur(8px)' }}
@@ -256,7 +256,6 @@ export const AccommodationDetailsCard: React.FC<AccommodationDetailsCardProps> =
                       
                       <motion.button
                         whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
                         onClick={nextImage}
                         className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-md bg-black/30 text-white hover:bg-black/50 transition-all duration-200 z-10"
                         style={{ backdropFilter: 'blur(8px)' }}
@@ -271,7 +270,7 @@ export const AccommodationDetailsCard: React.FC<AccommodationDetailsCardProps> =
                     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-10">
                       {allImages.map((_, index) => (
                         <button
-                          key={index}
+                          key={`indicator-${index}`}
                           onClick={() => setCurrentImageIndex(index)}
                           className={`w-3 h-3 rounded-full transition-all duration-200 ${
                             index === currentImageIndex 
@@ -363,7 +362,7 @@ export const AccommodationDetailsCard: React.FC<AccommodationDetailsCardProps> =
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                       {accommodation.features.map((feature, index) => (
                         <motion.div
-                          key={index}
+                          key={`feature-${index}`}
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: index * 0.1 }}
@@ -394,7 +393,7 @@ export const AccommodationDetailsCard: React.FC<AccommodationDetailsCardProps> =
                     <div className="flex flex-wrap gap-3">
                       {accommodation.badges.map((badge, index) => (
                         <motion.span
-                          key={index}
+                          key={`badge-${index}`}
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: index * 0.1 }}
@@ -469,13 +468,14 @@ export const AccommodationDetailsCard: React.FC<AccommodationDetailsCardProps> =
               </div>
             </div>
            </motion.div>
-         </>
+         </div>
        )}
 
        {/* Fullscreen Image Modal */}
-       <AnimatePresence>
+       <AnimatePresence key="fullscreen-modal">
          {isFullscreen && (
            <motion.div
+             key="fullscreen-content"
              initial={{ opacity: 0 }}
              animate={{ opacity: 1 }}
              exit={{ opacity: 0 }}
@@ -488,12 +488,11 @@ export const AccommodationDetailsCard: React.FC<AccommodationDetailsCardProps> =
                initial={{ opacity: 0, scale: 0.8 }}
                animate={{ opacity: 1, scale: 1 }}
                exit={{ opacity: 0, scale: 0.8 }}
-               whileHover={{ scale: 1.1 }}
-               whileTap={{ scale: 0.9 }}
+               whileHover={{ scale: 1.05 }}
                onClick={() => setIsFullscreen(false)}
-               className="absolute top-6 right-6 p-3 bg-black/50 text-white rounded-full backdrop-blur-sm hover:bg-black/70 transition-all duration-200 z-10"
+               className="absolute top-3 right-3 sm:top-6 sm:right-6 p-2 sm:p-3 bg-white/20 backdrop-blur-md text-white rounded-full hover:bg-white/30 transition-all duration-200 z-10 border border-white/20"
              >
-               <X size={24} />
+               <X size={18} className="sm:w-6 sm:h-6" />
              </motion.button>
 
              {/* Fullscreen Image */}
@@ -533,29 +532,27 @@ export const AccommodationDetailsCard: React.FC<AccommodationDetailsCardProps> =
                    <motion.button
                      initial={{ opacity: 0, x: -20 }}
                      animate={{ opacity: 1, x: 0 }}
-                     whileHover={{ scale: 1.1 }}
-                     whileTap={{ scale: 0.9 }}
+                     whileHover={{ scale: 1.05 }}
                      onClick={(e) => {
                        e.stopPropagation();
                        prevImage();
                      }}
-                     className="absolute left-8 top-1/2 -translate-y-1/2 p-4 bg-black/60 text-white rounded-full backdrop-blur-sm hover:bg-black/80 transition-all duration-200 z-10"
+                     className="absolute left-2 sm:left-4 md:left-8 top-1/2 -translate-y-1/2 p-2 sm:p-3 md:p-4 bg-white/20 backdrop-blur-md text-white rounded-full hover:bg-white/30 transition-all duration-200 z-10 border border-white/20"
                    >
-                     <ChevronLeft size={28} />
+                     <ChevronLeft size={20} className="sm:w-6 sm:h-6 md:w-7 md:h-7" />
                    </motion.button>
                    
                    <motion.button
                      initial={{ opacity: 0, x: 20 }}
                      animate={{ opacity: 1, x: 0 }}
-                     whileHover={{ scale: 1.1 }}
-                     whileTap={{ scale: 0.9 }}
+                     whileHover={{ scale: 1.05 }}
                      onClick={(e) => {
                        e.stopPropagation();
                        nextImage();
                      }}
-                     className="absolute right-8 top-1/2 -translate-y-1/2 p-4 bg-black/60 text-white rounded-full backdrop-blur-sm hover:bg-black/80 transition-all duration-200 z-10"
+                     className="absolute right-2 sm:right-4 md:right-8 top-1/2 -translate-y-1/2 p-2 sm:p-3 md:p-4 bg-white/20 backdrop-blur-md text-white rounded-full hover:bg-white/30 transition-all duration-200 z-10 border border-white/20"
                    >
-                     <ChevronRight size={28} />
+                     <ChevronRight size={20} className="sm:w-6 sm:h-6 md:w-7 md:h-7" />
                    </motion.button>
                  </>
                )}
@@ -565,41 +562,12 @@ export const AccommodationDetailsCard: React.FC<AccommodationDetailsCardProps> =
                  <motion.div
                    initial={{ opacity: 0, y: 20 }}
                    animate={{ opacity: 1, y: 0 }}
-                   className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-black/60 text-white px-6 py-3 rounded-full text-lg font-medium backdrop-blur-sm z-10"
+                   className="absolute bottom-10 sm:bottom-8 -translate-x-1/2 bg-white/20 backdrop-blur-md text-white px-3 py-2 sm:px-6 sm:py-3 rounded-full text-sm sm:text-lg font-medium border border-white/20 z-10"
                  >
                    {currentImageIndex + 1} / {allImages.length}
                  </motion.div>
                )}
 
-               {/* Thumbnail Strip */}
-               {allImages.length > 1 && (
-                 <motion.div
-                   initial={{ opacity: 0, y: 20 }}
-                   animate={{ opacity: 1, y: 0 }}
-                   className="absolute bottom-20 left-1/2 -translate-x-1/2 flex space-x-3 z-10"
-                 >
-                   {allImages.map((image, index) => (
-                     <button
-                       key={index}
-                       onClick={(e) => {
-                         e.stopPropagation();
-                         setCurrentImageIndex(index);
-                       }}
-                       className={`w-16 h-16 rounded-lg overflow-hidden transition-all duration-200 ${
-                         index === currentImageIndex 
-                           ? 'ring-3 ring-white scale-110 shadow-lg' 
-                           : 'opacity-60 hover:opacity-100 hover:scale-105'
-                       }`}
-                     >
-                       <img
-                         src={image}
-                         alt={`Thumbnail ${index + 1}`}
-                         className="w-full h-full object-cover"
-                       />
-                     </button>
-                   ))}
-                 </motion.div>
-               )}
              </motion.div>
            </motion.div>
          )}

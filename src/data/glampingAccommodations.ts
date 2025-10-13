@@ -16,7 +16,7 @@ export interface Accommodation {
 }
 
 export const getGlampingAccommodations = (selectedLocation: string): Accommodation[] => {
-  if (selectedLocation === 'Canada') {
+  if (selectedLocation === 'International') {
     return [];
   } else {
     return [

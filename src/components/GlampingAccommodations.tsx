@@ -1,4 +1,4 @@
-import { AccommodationsGrid } from './AccommodationsGrid';
+import { VirtualizedAccommodationsGrid } from './VirtualizedAccommodationsGrid';
 import { getGlampingAccommodations } from '../data/glampingAccommodations';
 
 interface AccommodationsProps {
@@ -16,12 +16,13 @@ export const GlampingAccommodations = ({
     </>
   );
   
-  const description = selectedLocation === 'Canada' 
-    ? 'From urban apartments to mountain lodges, discover comfort across Canada' 
+  const description = selectedLocation === 'International' 
+    ? 'From urban apartments to mountain lodges, discover comfort across the globe' 
     : 'Experience Pakistan\'s rich culture and natural beauty with our curated stays';
 
   return (
-    <AccommodationsGrid
+    <VirtualizedAccommodationsGrid
+      key={`glamping-${selectedLocation}`}
       accommodations={accommodations}
       selectedLocation={selectedLocation}
       title={title}
