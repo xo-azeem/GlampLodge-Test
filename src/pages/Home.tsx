@@ -605,7 +605,7 @@ export const Home = ({ selectedLocation }: HomeProps) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             // Container is visible, initialize canvas after a brief delay
-            setTimeout(initializeCanvas, 100);
+            setTimeout(initializeCanvas, 200);
             observer.disconnect(); // Only initialize once
           }
         });
@@ -617,8 +617,8 @@ export const Home = ({ selectedLocation }: HomeProps) => {
       observer.observe(canvasContainerRef.current);
     }
 
-    // Fallback: initialize after 500ms regardless
-    const fallbackTimer = setTimeout(initializeCanvas, 500);
+    // Fallback: initialize after 800ms regardless (increased for better loading experience)
+    const fallbackTimer = setTimeout(initializeCanvas, 800);
 
     return () => {
       observer.disconnect();
